@@ -228,8 +228,9 @@ _pkginfo.txt
 # Visual Studio cache files
 # files ending in .cache can be ignored
 *.[Cc]ache
+
 # but keep track of directories ending in .cache
-!?*.[Cc]ache/
+#!?*.[Cc]ache/
 
 # Others
 ClientBin/
@@ -455,3 +456,5 @@ $RECYCLE.BIN/
 
 
 appsettings.json
+API/obj/Debug/net5.0/API.assets.cache
+API/obj/Debug/net5.0/API.GeneratedMSBuildEditorConfig.editorconfig
