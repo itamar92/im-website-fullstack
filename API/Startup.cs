@@ -20,14 +20,15 @@ namespace API
     {
         private readonly IConfiguration _config;
 
-        public Startup(IConfiguration config) 
+        public Startup(IConfiguration config)
         {
             _config = config;
         }
-     
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options => {
+            services.AddDbContext<DataContext>(options =>
+            {
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
             });
 
@@ -54,10 +55,10 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(policy => 
+            app.UseCors(policy =>
             policy.AllowAnyHeader()
             .AllowAnyMethod()
-            .WithOrigins("http://localhost:3000")
+            .WithOrigins("https://localhost:3000")
             );
 
             app.UseAuthorization();
