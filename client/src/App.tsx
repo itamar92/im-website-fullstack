@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
-import "./App.css";
 import axios, { AxiosResponse } from "axios";
 import { urlUsers } from "./endpoints";
+import Navbar from "./Components/Navbar/Navbar";
 
 function App() {
-  const [users, setUsers] = useState([{
-    id:"",
-    userName:""
-  }]);
+  const [users, setUsers] = useState([
+    {
+      id: "",
+      userName: "",
+    },
+  ]);
 
   useEffect(() => {
     axios.get(urlUsers).then((response: AxiosResponse<any>) => {
@@ -20,7 +22,8 @@ function App() {
   console.log(users);
 
   return (
-    <div className="App">
+    <div>
+      <Navbar />
       <p>Hello</p>
       {users &&
         users.map((user) => (
