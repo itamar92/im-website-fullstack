@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
-import logo from "./logo.svg";
+import React, { useContext, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { urlUsers } from "./endpoints";
 import Navbar from "./Components/Navbar/Navbar";
+import Home from "./Pages/Home/Home";
+import colorTheme from "./colorTheme";
+import { ThemeProvider } from "@emotion/react";
+import { UserContext } from "./Services/UserContext";
 
 function App() {
   const [users, setUsers] = useState([
@@ -11,6 +14,8 @@ function App() {
       userName: "",
     },
   ]);
+
+ // const { details } = useContext(UserContext);
 
   useEffect(() => {
     axios.get(urlUsers).then((response: AxiosResponse<any>) => {
@@ -23,7 +28,9 @@ function App() {
 
   return (
     <div>
+      <ThemeProvider theme={colorTheme}>
       <Navbar />
+      <Home/>
       <p>Hello</p>
       {users &&
         users.map((user) => (
@@ -31,6 +38,7 @@ function App() {
             {user.id} - {user.userName}
           </li>
         ))}
+      </ThemeProvider>
     </div>
   );
 }

@@ -1,4 +1,7 @@
 import { useState, createContext } from "react";
+import axios, { AxiosResponse } from "axios";
+import { urlUsers } from "../endpoints";
+
 
 export const UserContext = createContext({});
 
@@ -15,19 +18,17 @@ function UserProvider( children: any ) {
   
    // const [isAdmin, setAdmin] = useLocalStorage("admin", false);
   
-    const auth = async (email:string, password:string) => {
-      var response = await fetch(
-        `http://localhost:5000/users?email=${email}&password=${password}`,
-        { method: "GET" }
-      );
-      return await response.json();
-    };
+   const getUsers = async () => {
+    await axios.get(urlUsers).then((response: AxiosResponse<any>) => {
+    setDetails(response.data);
+    })};
   
 
     return (
         <UserContext.Provider
           value={{
-            
+            details,
+            getUsers
           }}
         >
           {children}
