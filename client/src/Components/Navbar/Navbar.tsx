@@ -16,6 +16,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
+import { Link } from "react-router-dom";
 
 //#region SEARCH BAR
 const Search = styled("div")(({ theme }) => ({
@@ -109,7 +110,9 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="login">Sign In</Link>
+      </MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
@@ -153,7 +156,7 @@ export default function Navbar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <Link to="login">Sign In</Link>
       </MenuItem>
     </Menu>
   );
@@ -192,7 +195,9 @@ export default function Navbar() {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Home</Typography>
+                <Typography textAlign="center">
+                  <Link to="/">Home</Link>
+                </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">About</Typography>
@@ -241,11 +246,11 @@ export default function Navbar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, mr: 5 }}>
-            <Button
+            <Button 
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              Home
+              <Link  to="/">Home</Link>
             </Button>
             <Button
               onClick={handleCloseNavMenu}

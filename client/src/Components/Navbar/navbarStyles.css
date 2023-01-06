@@ -1,18 +1,3 @@
-.dropdown{
-    margin-right:6rem;
-}
-
-.offcanvas {
-    --bs-offcanvas-width: 200px;
-  }
-
-
-
-
-    /* ===================================  MEDIA QUERIES (offcanvas) =================================== */
-    @media screen and (max-width: 992px) {
-    .dropdown {
-        margin-right:0rem;
-
-    }
+.nav_link a {
+    color: white;
 }
