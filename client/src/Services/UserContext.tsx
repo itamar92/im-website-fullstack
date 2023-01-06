@@ -20,11 +20,6 @@ type UserContextProviderProps = {
 
 export function UserContextProvider(  {children}: UserContextProviderProps  ) {
     const [user, setUser] = useState<AuthUser | null>(null);
-    //const [userName, setUser] = useLocalStorage("userName", "");
-    const [error, setError] = useState("");
-    //const [isLoggedIn, setIsLoggedIn] = useLocalStorage("login", false);
-  
-   // const [isAdmin, setAdmin] = useLocalStorage("admin", false);
   
    const getUsers = async () => {
     await axios.get(urlUsers).then((response: AxiosResponse<any>) => {

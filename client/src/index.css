@@ -32,3 +32,12 @@ body {
   background-image:url(../src/assents/bg-texture.png) ;
   /* height: 100%; */
 }
+
+.App {
+  margin-top: 2em;
+}
+
+a {
+  
+  text-decoration: none;
+}

@@ -5,14 +5,22 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import App from "./App";
 import { UserContextProvider } from "./Services/UserContext";
+import { AuthProvider } from "./Context/AuthProvider";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   // <React.StrictMode>
-  <UserContextProvider>
-    <App />
-  </UserContextProvider>
+  <BrowserRouter>
+    <UserContextProvider>
+      <AuthProvider>
+        <Routes>
+          <Route path="/*" element={<App />} />
+        </Routes>
+      </AuthProvider>
+    </UserContextProvider>
+  </BrowserRouter>
   /* </React.StrictMode> */
 );

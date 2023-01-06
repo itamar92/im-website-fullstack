@@ -6,6 +6,9 @@ import Home from "./Pages/Home/Home";
 import colorTheme from "./colorTheme";
 import { ThemeProvider } from "@emotion/react";
 import { UserContext } from "./Services/UserContext";
+import Login from "./Components/Login/Login";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./Components/Layout";
 
 function App() {
   const [users, setUsers] = useState([
@@ -19,29 +22,25 @@ function App() {
   const userContext = useContext(UserContext);
 
   useEffect(() => {
-    axios.get(urlUsers).then((response: AxiosResponse<any>) => {
-      userContext?.setUser(response.data);
-      setUsers(userContext?.user);
-      //console.log(users);
-    });
+    // axios.get(urlUsers).then((response: AxiosResponse<any>) => {
+    //   userContext?.setUser(response.data);
+    //   setUsers(userContext?.user);
+    //   //console.log(users);
+    // });
   }, []);
 
-  console.log(userContext?.user);
+  // console.log(userContext?.user);
 
   return (
-    <div>
-      <ThemeProvider theme={colorTheme}>
-        <Navbar />
-        <Home />
-        <p>Hello</p>
-        {users &&
-          users.map((user) => (
-            <li key={user.id}>
-              {user.id} - {user.userName}
-            </li>
-          ))}
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={colorTheme}>
+      <Navbar/>
+    <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="login" element={<Login />} />
+        </Route>
+    </Routes>
+    </ThemeProvider>
   );
 }
 
