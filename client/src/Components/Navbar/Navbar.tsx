@@ -1,5 +1,7 @@
 import * as React from "react";
+import { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
+import { Link } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,7 +18,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
-import { Link } from "react-router-dom";
+import LoginControl from "../Login/LoginControl";
 
 //#region SEARCH BAR
 const Search = styled("div")(({ theme }) => ({
@@ -60,12 +62,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 //#endregion
 export default function Navbar() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+    useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -111,7 +111,9 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Link to="login">Sign In</Link>
+        <Link color="inherit" underline="none" href="login">
+          Sign In
+        </Link>
       </MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
@@ -134,29 +136,15 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show shopping cart"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <ShoppingCartIcon />
-          </Badge>
-        </IconButton>
-        <p>Cart</p>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <Link color="inherit" underline="none" href="login">
+          Sign In
+        </Link>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <Link to="login">Sign In</Link>
+        <Link color="inherit" underline="none" href="login">
+          Sign Up
+        </Link>
       </MenuItem>
     </Menu>
   );
@@ -196,14 +184,26 @@ export default function Navbar() {
             >
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/">Home</Link>
+                  <Link color="inherit" underline="none" href="/">
+                    Home
+                  </Link>
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">About</Typography>
+                <Typography textAlign="center">
+                  {" "}
+                  <Link color="inherit" underline="none" href="#about">
+                    About
+                  </Link>
+                </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Products</Typography>
+                <Typography textAlign="center">
+                  {" "}
+                  <Link color="inherit" underline="none" href="/">
+                    Products
+                  </Link>
+                </Typography>
               </MenuItem>
             </Menu>
           </Box>
@@ -213,7 +213,7 @@ export default function Navbar() {
             color="inherit"
             component="a"
             href=""
-            sx={{ ml: 2 }}
+            sx={{ ml: 1 }}
           >
             <GraphicEqIcon
               sx={{ display: { xs: "flex", md: "flex" }, mr: 1 }}
@@ -222,7 +222,7 @@ export default function Navbar() {
               variant="h5"
               noWrap
               sx={{
-                mr: 2,
+                mr: 1,
                 display: { xs: "flex", md: "flex" },
                 flexGrow: 1,
                 fontFamily: "monospace",
@@ -246,41 +246,46 @@ export default function Navbar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, mr: 5 }}>
-            <Button 
+            <Button
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              <Link  to="/">Home</Link>
+              <Link color="inherit" variant="body2" underline="none" href="/">
+                Home
+              </Link>
             </Button>
             <Button
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              About
+              <Link
+                color="inherit"
+                variant="body2"
+                underline="none"
+                href="#about"
+              >
+                About
+              </Link>
             </Button>
             <Button
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              Products
+              <Link color="inherit" variant="body2" underline="none" href="/">
+                Products
+              </Link>
             </Button>
           </Box>
-          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 5 }}>
-            <IconButton size="large" color="inherit">
-              <Badge badgeContent={17} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
+          <IconButton size="large" color="inherit">
+            <Badge badgeContent={17} color="error">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
+          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 3 }}>
+            <IconButton >
+            <Link color="inherit" variant="body2" underline="none" href="login">
+              <LoginControl />
+              </Link>
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
@@ -292,7 +297,7 @@ export default function Navbar() {
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
+              <AccountCircle />
             </IconButton>
           </Box>
         </Toolbar>

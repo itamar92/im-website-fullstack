@@ -1,0 +1,124 @@
+.header {
+    background: radial-gradient( #240577 50%, transparent 100%);
+    /* height: 85vh;    */
+    overflow: hidden;
+}
+
+.header__container{
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    text-align: match-parent;
+    height: 100%;
+    padding: 4rem;
+    position: relative;
+    animation: Header 1s ease 0s 1 normal forwards;
+    @keyframes Header {
+        0% {
+            opacity: 0;
+        }
+    
+        100% {
+            opacity: 1;
+        }
+    }
+    
+}
+.header h1,h2,h3,h4,h5 {
+    border: 0.5rem;
+   
+}
+
+.header__title{
+    width: 20rem;
+}
+
+.about__container {
+    display: grid;
+    grid-template-columns: 35% 50%;
+    gap: 15%;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.about__me {
+    width: 50%;
+    aspect-ratio: 1/1;
+    border-radius: 2rem;
+    background: linear-gradient(45deg, transparent,var(--color-primary), transparent);
+    display: grid;
+    place-items: center;
+}
+
+
+.about__content p {
+    margin: 2rem 0 2.6rem;  
+    color: var(--color-light);
+}
+
+
+/* ===================================  MEDIA QUERIES (MEDIUM DEVICES) =================================== */
+@media screen and (max-width: 1024px) {
+    .header {
+        /* height: 68vh; */
+        }
+    }
+
+    .header__container{
+        height:fit-content;
+
+     }
+
+     .logo {
+         display: flex;
+         position:absolute;
+         align-items: center;
+        
+     }
+
+     .about__container {
+        grid-template-columns: 1fr;
+        gap:0
+    }
+
+    .about__me {
+        width: 50% ;
+        margin: 2rem auto 4rem;
+    }
+  .about__content p {
+      margin: 1rem 0 1.5rem;
+  }
+  
+  
+  /* ===================================  MEDIA QUERIES (SMALL DEVICES) =================================== */
+  @media screen and (max-width: 600px) {
+    .header {
+        /* height: 100vh; */
+         }
+
+         .header__socials,
+         .scroll__down {
+             display: none;
+         }
+
+         .header__container{
+            height:fit-content;
+            
+         }
+
+         .about__me {
+            width: 65%;
+            margin: 0 auto 3rem;
+        }
+        .about__content {
+            text-align: center;
+        }
+    
+        .about__content p {
+            margin: 1.5rem 0;
+        }
+        }
+
+

@@ -4,8 +4,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 import App from "./App";
-import { UserContextProvider } from "./Services/UserContext";
-import { AuthProvider } from "./Context/AuthProvider";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const root = ReactDOM.createRoot(
@@ -14,13 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   // <React.StrictMode>
   <BrowserRouter>
-    <UserContextProvider>
-      <AuthProvider>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
-      </AuthProvider>
-    </UserContextProvider>
+    <Routes>
+      <Route path="/*" element={<App />} />
+    </Routes>
   </BrowserRouter>
   /* </React.StrictMode> */
 );
