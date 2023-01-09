@@ -2,7 +2,8 @@
 
 :root{
   --color-bg: #1f1f38;
-  --color-bg-variant: rgb(44, 44, 108);
+  --color-bg-variant: rgb(2 46 112);
+  /* --color-bg-variant: rgb(44, 44, 108); */
   --color-primary: #4db5ff;
   --color-primary-variant: rgba(77,181,255,0.4);
   --color-white: #fff;
@@ -58,4 +59,10 @@ body {
   padding: 0.5rem;
   margin-bottom: 0.5rem;
   width: 80%;
+}
+/* ===================================  MEDIA QUERIES (SMALL DEVICES) =================================== */
+@media screen and (max-width: 600px) {
+h1,h2 {
+  text-align: center;
+}
 }

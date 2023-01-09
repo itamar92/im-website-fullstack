@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useAuthProvider } from "../../Context/AuthProvider";
+import { User } from "../../interface/user";
 
 function LoginControl() {
-  const [userName, setUserName] = useState("itamar");
+  // const authContext = useContext(AuthContext);
+  const { auth } = useAuthProvider();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   //#region Avatar    Icon Color
   function stringToColor(string: string) {
     let hash = 0;
@@ -32,25 +36,34 @@ function LoginControl() {
       <div>
         <Avatar
           sx={{
-            bgcolor: stringToColor(userName),
+            bgcolor: stringToColor(auth.firstname),
             width: 30,
             height: 30,
             fontSize: 20,
           }}
-          children={userName[0]}
+          children={auth.firstname[0]}
         />
-        <h3 style={{ paddingLeft: "45px", marginTop: "-27px" }}> {userName}</h3>
+        <h3 style={{ paddingLeft: "45px", marginTop: "-27px" }}>
+          {" "}
+          {auth.firstname}
+        </h3>
       </div>
     );
   } else {
     loginName = (
-      <h3>
-        <AccountCircleIcon style={{ margin: "-4px" }} /> Sign In
-      </h3>
+      <p>
+        <AccountCircleIcon /> Sign In
+      </p>
     );
   }
 
-  return <div>LoginControl</div>;
+  useEffect(() => {
+    // let user = localStorage.getItem('user');
+    // let parseUser = JSON.parse(user);
+    // if (parseUser === "")
+  }, []);
+
+  return <div>{loginName}</div>;
 }
 
 export default LoginControl;

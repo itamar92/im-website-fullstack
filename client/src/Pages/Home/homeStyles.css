@@ -1,5 +1,5 @@
 .header {
-    background: radial-gradient( #240577 50%, transparent 100%);
+    background: radial-gradient( #240577 30%, transparent 100%);
     /* height: 85vh;    */
     overflow: hidden;
 }
@@ -11,7 +11,8 @@
     justify-content: center;
     text-align: match-parent;
     height: 100%;
-    padding: 4rem;
+    padding: 2rem;
+    padding-bottom: 1rem;
     position: relative;
     animation: Header 1s ease 0s 1 normal forwards;
     @keyframes Header {
@@ -48,15 +49,60 @@
     aspect-ratio: 1/1;
     border-radius: 2rem;
     background: linear-gradient(45deg, transparent,var(--color-primary), transparent);
-    display: grid;
-    place-items: center;
+    
 }
 
 
 .about__content p {
     margin: 2rem 0 2.6rem;  
     color: var(--color-light);
+    font-size: 20px;
 }
+
+.contact__options{
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin: 2rem auto 4rem;
+}
+.contact__option {
+    background: var(--color-bg-variant);
+    padding: 1.2rem;
+    border-radius: 1.2rem;
+    text-align: center;
+    border: 1px solid transparent;
+    transition: var(--transition);
+}
+
+.contact__option:hover{
+    background: transparent ;
+    border-color: var(--color-primary-variant);
+}
+
+.contact__option-icon{
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/*=================== FORM =======================*/
+
+.contact__form{
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    position: none;
+}
+
+.contact__form input,textarea {
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    background: transparent;
+    border: 2px solid var(--color-primary-variant);
+    resize: none;
+    color: var(--color-white);
+}
+  
 
 
 /* ===================================  MEDIA QUERIES (MEDIUM DEVICES) =================================== */
@@ -68,6 +114,9 @@
 
     .header__container{
         height:fit-content;
+        padding: 1rem;
+        padding-top: 2rem;
+        padding-bottom: 13rem;
 
      }
 
@@ -90,6 +139,7 @@
   .about__content p {
       margin: 1rem 0 1.5rem;
   }
+
   
   
   /* ===================================  MEDIA QUERIES (SMALL DEVICES) =================================== */
@@ -105,6 +155,11 @@
 
          .header__container{
             height:fit-content;
+            padding: 1rem ;
+            padding-bottom: 2rem;
+            padding-top: 4rem;
+            text-align: center;
+
             
          }
 

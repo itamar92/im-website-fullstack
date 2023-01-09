@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import { Link } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -19,6 +19,8 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import LoginControl from "../Login/LoginControl";
+import Login from "../Login/Login";
+import { useAuthProvider } from "../../Context/AuthProvider";
 
 //#region SEARCH BAR
 const Search = styled("div")(({ theme }) => ({
@@ -66,6 +68,8 @@ export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
+  //const authContext = useContext(AuthContext);
+  const { loginDialog, setLoginDialog } = useAuthProvider();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -111,11 +115,9 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <Link color="inherit" underline="none" href="login">
-          Sign In
-        </Link>
+        <button onClick={() => setLoginDialog(true)}>Sign In</button>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem>My account</MenuItem>
     </Menu>
   );
 
@@ -136,11 +138,7 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <Link color="inherit" underline="none" href="login">
-          Sign In
-        </Link>
-      </MenuItem>
+      <MenuItem onClick={() => setLoginDialog(true)}>Sign In</MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <Link color="inherit" underline="none" href="login">
           Sign Up
@@ -151,7 +149,7 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position='fixed' >
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -275,18 +273,39 @@ export default function Navbar() {
                 Products
               </Link>
             </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <Link
+                color="inherit"
+                variant="body2"
+                underline="none"
+                href="#contact"
+              >
+                Contact
+              </Link>
+            </Button>
           </Box>
           <IconButton size="large" color="inherit">
             <Badge badgeContent={17} color="error">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
-          <Box sx={{ display: { xs: "none", md: "flex" }, mr: 3 }}>
-            <IconButton >
-            <Link color="inherit" variant="body2" underline="none" href="login">
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              mr: 3,
+              justifyContent: "center",
+            }}
+          >
+            <IconButton color="inherit" onClick={() => setLoginDialog(true)}>
               <LoginControl />
-              </Link>
             </IconButton>
+            <Login
+              // isDialogOpen={loginDialog}
+              // setIsDialogOpen={loginDialog}
+            />
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
