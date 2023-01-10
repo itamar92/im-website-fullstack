@@ -7,18 +7,18 @@ import {
   useContext,
   Dispatch,
 } from "react";
-import { User } from "../interface/user";
+import { IUser } from "../interface/IUser";
 
 interface AuthContextProps {
-  auth: User | any;
-  setAuth: (auth: User) => void;
+  auth: IUser | any;
+  setAuth: (auth: IUser) => void;
   loginDialog: boolean | null;
   setLoginDialog: (loginDialog: SetStateAction<boolean>) => void;
 }
 
 type AuthContextType = {
-  auth: User | any;
-  setAuth: (auth: User) => void;
+  auth: IUser | any;
+  setAuth: (auth: IUser) => void;
   loginDialog: boolean;
   setLoginDialog: Dispatch<SetStateAction<boolean>>;
 };

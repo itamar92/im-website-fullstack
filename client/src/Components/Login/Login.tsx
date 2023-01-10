@@ -9,7 +9,7 @@ import React, {
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuthProvider } from "../../Context/AuthProvider";
 import axios from "../../clientApi/axios";
-import { User } from "../../interface/user";
+import { IUser } from "../../interface/IUser";
 import Container from "@mui/system/Container";
 import FormControl from "@mui/material/FormControl";
 import Backdrop from "@mui/material/Backdrop";
@@ -53,9 +53,7 @@ const Login = () => {
     event.preventDefault();
   };
 
-
   const handleClickAway = () => {
-     
     setLoginDialog(!loginDialog);
     //setOpen(false);
     //navigate(from, { replace: true });
@@ -76,7 +74,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post<IUserRequest, { data: User }>(
+      const response = await axios.post<IUserRequest, { data: IUser }>(
         LOGIN_URL,
         {
           userName,
@@ -112,13 +110,13 @@ const Login = () => {
   useEffect(() => {
     //console.log(authContext?.auth);
     localStorage.setItem("user", JSON.stringify(auth));
-    
   }, [success]);
 
   return (
     <Backdrop sx={{ color: "#fff", zIndex: 1 }} open={dropOpen}>
       <ClickAwayListener onClickAway={handleClickAway}>
-        <Container maxWidth='lg'
+        <Container
+          maxWidth="lg"
           sx={{ display: "contents", justifyItems: "center" }}
         >
           <Box
@@ -209,8 +207,6 @@ interface IUserRequest {
   password: string;
 }
 
-interface ILoginResponse {
-  data: User;
-}
+
 
 export default Login;

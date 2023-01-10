@@ -11,21 +11,26 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./Components/Layout";
 import { AuthProvider } from "./Context/AuthProvider";
 import KeepLoggedIn from "./Components/Login/KeepLoggedIn";
+import { ProductsProvider } from "./Context/ProductsContext";
+import Products from "./Pages/Products/Products";
 
 function App() {
   return (
-    <UserContextProvider>
+    
       <AuthProvider>
         <ThemeProvider theme={colorTheme}>
+          <ProductsProvider>
           <Navbar />
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route path="/" element={<Home />} />
+              <Route path="products" element={<Products />} />
             </Route>
           </Routes>
+          </ProductsProvider>
         </ThemeProvider>
       </AuthProvider>
-    </UserContextProvider>
+    
   );
 }
 

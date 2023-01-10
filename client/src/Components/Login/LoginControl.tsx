@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useAuthProvider } from "../../Context/AuthProvider";
-import { User } from "../../interface/user";
+import { IUser } from "../../interface/IUser";
 
 function LoginControl() {
   // const authContext = useContext(AuthContext);

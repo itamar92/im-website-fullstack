@@ -198,7 +198,7 @@ export default function Navbar() {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
                   {" "}
-                  <Link color="inherit" underline="none" href="/">
+                  <Link color="inherit" underline="none" href="/products">
                     Products
                   </Link>
                 </Typography>
@@ -269,7 +269,7 @@ export default function Navbar() {
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              <Link color="inherit" variant="body2" underline="none" href="/">
+              <Link color="inherit" variant="body2" underline="none" href="/products">
                 Products
               </Link>
             </Button>
