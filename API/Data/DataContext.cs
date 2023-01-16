@@ -12,5 +12,7 @@ namespace API.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options)  {  }
 
         public DbSet<AppUser> Users { get; set; }
+        public DbSet<Music> Music { get; set; }
+        public DbSet<Photo> Photos { get; set; }
     }
 }
