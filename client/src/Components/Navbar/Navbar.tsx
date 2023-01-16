@@ -149,7 +149,7 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position='fixed' >
+      <AppBar position="fixed">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -190,7 +190,7 @@ export default function Navbar() {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
                   {" "}
-                  <Link color="inherit" underline="none" href="#about">
+                  <Link color="inherit" underline="none" href="/#about">
                     About
                   </Link>
                 </Typography>
@@ -200,6 +200,14 @@ export default function Navbar() {
                   {" "}
                   <Link color="inherit" underline="none" href="/products">
                     Products
+                  </Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  {" "}
+                  <Link color="inherit" underline="none" href="/#contact">
+                    Contact
                   </Link>
                 </Typography>
               </MenuItem>
@@ -260,7 +268,7 @@ export default function Navbar() {
                 color="inherit"
                 variant="body2"
                 underline="none"
-                href="#about"
+                href="/#about"
               >
                 About
               </Link>
@@ -269,7 +277,12 @@ export default function Navbar() {
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >
-              <Link color="inherit" variant="body2" underline="none" href="/products">
+              <Link
+                color="inherit"
+                variant="body2"
+                underline="none"
+                href="/products"
+              >
                 Products
               </Link>
             </Button>
@@ -281,7 +294,7 @@ export default function Navbar() {
                 color="inherit"
                 variant="body2"
                 underline="none"
-                href="#contact"
+                href="/#contact"
               >
                 Contact
               </Link>
@@ -303,8 +316,8 @@ export default function Navbar() {
               <LoginControl />
             </IconButton>
             <Login
-              // isDialogOpen={loginDialog}
-              // setIsDialogOpen={loginDialog}
+            // isDialogOpen={loginDialog}
+            // setIsDialogOpen={loginDialog}
             />
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

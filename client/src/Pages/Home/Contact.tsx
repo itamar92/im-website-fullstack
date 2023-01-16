@@ -12,7 +12,7 @@ function Contact() {
       <Container >
         <h2>Contact Me</h2>
         <Grid container spacing={2} alignItems="center" pt={4}>
-          <Grid direction={"column"} className="contact__options" lg={4}>
+          <Grid container direction={"column"} className="contact__options" item lg={4} mr={10}>
             <Grid>
               <Box
                 className="contact__option"
@@ -65,7 +65,7 @@ function Contact() {
             </Box>
           </Grid>
 
-          <Grid lg={4} className="about__content">
+          <Grid item lg={4} className="about__content">
             <Box>
             <form className="contact__form" action="">
           <input
