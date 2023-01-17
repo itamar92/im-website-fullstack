@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace API.Services
 {
-    public class DataCloudService : IDataCloud
+    public class DataCloudService : IDataCloudService
     {
 
         private readonly Cloudinary _cloudinary;
@@ -26,14 +26,12 @@ namespace API.Services
             _cloudinary = new Cloudinary(acc);
         }
 
-        public async Task<DeletionResult> DeletePhotoAsync(string publicId)
+        public async Task<DeletionResult> DeleteFileAsync(string publicId)
         {
             var deleteParams = new DeletionParams(publicId);
             var result = await _cloudinary.DestroyAsync(deleteParams);
             return result;
         }
-
-
         public async Task<ImageUploadResult> UploadPhotoAsync(IFormFile file)
         {
             var uploadResult = new ImageUploadResult();
@@ -71,6 +69,31 @@ namespace API.Services
 
             }
             return uploadResult;
+        }
+
+        public async Task<ListResourcesResult> ListResourcesByTagAsync()
+        {
+            var listParams = new ListResourcesParams()
+            {
+                Type = "upload",
+                Tags = true,
+
+            };
+
+            var listParamsTag = new ListResourcesByTagParams()
+            {
+                Tags = true,
+                Tag = "music",
+                
+            };
+
+
+
+
+            var listResources = await _cloudinary.ListResourcesAsync(listParams);
+
+            return listResources;
+
         }
 
     }

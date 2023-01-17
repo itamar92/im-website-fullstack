@@ -16,6 +16,38 @@ namespace API.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.17");
 
+            modelBuilder.Entity("API.Entities.AppMusic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("artist")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("asset_id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("filename")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("public_id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("tag")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Music");
+                });
+
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
                     b.Property<int>("Id")
@@ -43,35 +75,6 @@ namespace API.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("API.Entities.Music", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Artist")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PublicId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Tag")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Music");
                 });
 
             modelBuilder.Entity("API.Entities.Photo", b =>

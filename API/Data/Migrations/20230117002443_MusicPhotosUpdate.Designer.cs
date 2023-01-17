@@ -9,14 +9,46 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230116152312_MusicPhotosAdd")]
-    partial class MusicPhotosAdd
+    [Migration("20230117002443_MusicPhotosUpdate")]
+    partial class MusicPhotosUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.17");
+
+            modelBuilder.Entity("API.Entities.AppMusic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("artist")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("asset_id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("filename")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("public_id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("tag")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Music");
+                });
 
             modelBuilder.Entity("API.Entities.AppUser", b =>
                 {
@@ -47,46 +79,11 @@ namespace API.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("API.Entities.Music", b =>
+            modelBuilder.Entity("API.Entities.Photo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("AssetId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Artist")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PublicId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Tag")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Music");
-                });
-
-            modelBuilder.Entity("API.Entities.Photo", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AssetId")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("PublicId")
                         .HasColumnType("TEXT");

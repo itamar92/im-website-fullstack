@@ -12,6 +12,7 @@ namespace API.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    AssetId = table.Column<string>(type: "TEXT", nullable: true),
                     FileName = table.Column<string>(type: "TEXT", nullable: true),
                     Artist = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
@@ -30,6 +31,7 @@ namespace API.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    AssetId = table.Column<string>(type: "TEXT", nullable: true),
                     Url = table.Column<string>(type: "TEXT", nullable: true),
                     PublicId = table.Column<string>(type: "TEXT", nullable: true)
                 },

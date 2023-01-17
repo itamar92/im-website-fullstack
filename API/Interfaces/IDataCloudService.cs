@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace API.Interfaces
 {
-    public interface IDataCloud
+    public interface IDataCloudService
     {
         Task<ImageUploadResult> UploadPhotoAsync(IFormFile file);
         Task<VideoUploadResult> UploadVideoAsync(IFormFile file);
-        Task<DeletionResult> DeletePhotoAsync(string publicId);
+        Task<DeletionResult> DeleteFileAsync(string publicId);
+
+        Task<ListResourcesResult> ListResourcesByTagAsync();
         
     }
 }

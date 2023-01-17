@@ -8,6 +8,7 @@ namespace API.DTOs
     public class MusicDto
     {
         public int Id { get; set; }
+        public string AssetId { get; set; }
         public string FileName { get; set; }
         public string Artist { get; set; }
         public string Description { get; set; }

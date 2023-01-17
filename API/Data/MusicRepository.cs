@@ -16,21 +16,21 @@ namespace API.Data
         {
             _context = context;
         }
-        public async Task<IEnumerable<Music>> GetMusicAsync()
+        public async Task<IEnumerable<AppMusic>> GetMusicAsync()
         {
             return await _context.Music
              .ToListAsync();
         }
 
-        public async Task<Music> GetMusicByIdAsync(int id)
+        public async Task<AppMusic> GetMusicByIdAsync(string id)
         {
             return await _context.Music.FindAsync(id);
         }
 
-        public async Task<Music> GetMusicByUserNameAsync(string filename)
+        public async Task<AppMusic> GetMusicByUserNameAsync(string filename)
         {
             return await _context.Music
-            .SingleOrDefaultAsync(x => x.FileName == filename);
+            .SingleOrDefaultAsync(x => x.filename == filename);
         }
 
         public async Task<bool> SaveAllAsync()
@@ -38,9 +38,9 @@ namespace API.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void Update(Music music)
+        public void Update(AppMusic music)
         {
-            _context.Entry<Music>(music).State = EntityState.Modified;
+            _context.Entry<AppMusic>(music).State = EntityState.Modified;
         }
     }
 }
