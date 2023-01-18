@@ -14,7 +14,7 @@ namespace API.Interfaces
         Task<bool> SaveAllAsync();
 
         Task<IEnumerable<AppMusic>> GetMusicAsync();
-        Task<AppMusic> GetMusicByIdAsync(string id);
+        Task<AppMusic> GetMusicByIdAsync(int id);
         Task<AppMusic> GetMusicByUserNameAsync(string filename);
 
 

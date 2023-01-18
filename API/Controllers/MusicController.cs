@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -34,16 +35,16 @@ namespace API.Controllers
             return Ok(musicFiles);
         }
 
-        // [HttpGet("{filename}", Name = "GetMusic"),]
-        // public async Task<ActionResult<MusicDto>> GetUser(string filename)
-        // {
-        //     var rtn = await _musicRepository.GetMusicAsync(filename);
+        [HttpGet("{filename}", Name = "GetMusic"),]
+        public async Task<ActionResult<AppMusic>> GetMusic(string filename)
+        {
+            var rtn = await _musicRepository.GetMusicByUserNameAsync(filename);
 
-        //     return rtn;
-        // }
+            return rtn;
+        }
 
         [HttpPost("add-music")]
-        public async Task<ActionResult<MusicDto>> AddMusic(IFormFile file)
+        public async Task<ActionResult<AppMusic>> AddMusic(IFormFile file)
         {
 
             var result = await _dataCloudService.UploadVideoAsync(file);
@@ -54,44 +55,64 @@ namespace API.Controllers
             }
             var music = new AppMusic
             {
+                asset_id = result.AssetId,
+                filename = ConvertPublicIdToName(result.PublicId),
+                artist = "Itamar Miron",
                 url = result.SecureUrl.AbsoluteUri,
                 public_id = result.PublicId
             };
 
-            if (await _musicRepository.SaveAllAsync())
-            {
-                return CreatedAtRoute("GetMusic", new { filename = music.filename });
-            }
+            if (await MusicExists(music.public_id)) return BadRequest("File already exist");
 
-            return BadRequest("Problem adding music");
+            _context.Music.Add(music);
+            await _context.SaveChangesAsync();
+            return music;
+
+            
         }
 
-        [HttpDelete("delete-music/{musicId}")]
-        public async Task<ActionResult> DeleteMusic(string musicId)
+        [HttpDelete("delete-music/{Id}")]
+        public async Task<ActionResult> DeleteMusic(int Id)
         {
-            var musicRepo = await _musicRepository.GetMusicByIdAsync(musicId);
+            var musicRepo = await _musicRepository.GetMusicByIdAsync(Id);
+                      
+            var result = await _dataCloudService.DeleteFileAsync(musicRepo.public_id);
 
+            if (result.Error != null) return BadRequest(result.Error.Message + "File not found on cloud");
 
-            if (await MusicExists(musicId)) return BadRequest("music not found");
-
-            // some of our photos are stored on cloudinary (have PublicId), but maybe not all...
-            if (musicRepo.public_id != null)
-            {
-                var result = await _dataCloudService.DeleteFileAsync(musicRepo.public_id);
-
-                if (result.Error != null) return BadRequest(result.Error.Message);
-            }
 
             _context.Music.Remove(musicRepo);
+            await _dataCloudService.DeleteFileAsync(musicRepo.public_id);
 
-            if (await _musicRepository.SaveAllAsync()) return Ok();
+            if (await _musicRepository.SaveAllAsync()) return Ok(musicRepo.public_id + "was deleted");
 
-            return BadRequest("Failed to delete photo");
+            return BadRequest("Failed to delete music");
         }
 
-        private async Task<bool> MusicExists(string musicId)
+        private async Task<bool> MusicExists(string publicId)
         {
-            return await _context.Music.AnyAsync(x => x.asset_id == musicId);
+            return await _context.Music.AnyAsync(x => x.public_id == publicId);
         }
+
+        public string ConvertPublicIdToName(string name)
+        {
+            
+            name = name.Replace("/", " ");
+ 
+            name = name.Replace("_", " ");
+
+            // Capitalize first letter of each word
+            var words = name.Split(' ');
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (!string.IsNullOrWhiteSpace(words[i]))
+                    words[i] = char.ToUpper(words[i][0]) + words[i].Substring(1);
+            }
+            name = string.Join(" ", words, 1, words.Length - 1);
+
+            return name;
+        }
+
+
     }
 }

@@ -28,7 +28,11 @@ namespace API.Services
 
         public async Task<DeletionResult> DeleteFileAsync(string publicId)
         {
-            var deleteParams = new DeletionParams(publicId);
+            var deleteParams = new DeletionParams(publicId)
+            {
+                ResourceType = ResourceType.Video
+            };
+
             var result = await _cloudinary.DestroyAsync(deleteParams);
             return result;
         }
@@ -62,33 +66,28 @@ namespace API.Services
                 var uploadParams = new VideoUploadParams()
                 {
                     File = new FileDescription(file.FileName, stream),
+                    Folder = "Music",
+                    UseFilename = true,
+                    UniqueFilename = false,
+                    UseFilenameAsDisplayName = true
 
                 };
 
                 uploadResult = await _cloudinary.UploadAsync(uploadParams);
 
             }
+
             return uploadResult;
         }
 
-        public async Task<ListResourcesResult> ListResourcesByTagAsync()
+        public async Task<ListResourcesResult> ListVideoResourcesAsync()
         {
             var listParams = new ListResourcesParams()
             {
                 Type = "upload",
-                Tags = true,
+                ResourceType = ResourceType.Video
 
             };
-
-            var listParamsTag = new ListResourcesByTagParams()
-            {
-                Tags = true,
-                Tag = "music",
-                
-            };
-
-
-
 
             var listResources = await _cloudinary.ListResourcesAsync(listParams);
 

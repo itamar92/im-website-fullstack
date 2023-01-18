@@ -22,7 +22,7 @@ namespace API.Data
              .ToListAsync();
         }
 
-        public async Task<AppMusic> GetMusicByIdAsync(string id)
+        public async Task<AppMusic> GetMusicByIdAsync(int id)
         {
             return await _context.Music.FindAsync(id);
         }

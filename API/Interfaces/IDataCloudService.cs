@@ -10,7 +10,7 @@ namespace API.Interfaces
         Task<VideoUploadResult> UploadVideoAsync(IFormFile file);
         Task<DeletionResult> DeleteFileAsync(string publicId);
 
-        Task<ListResourcesResult> ListResourcesByTagAsync();
+        Task<ListResourcesResult> ListVideoResourcesAsync();
         
     }
 }
