@@ -36,7 +36,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{filename}", Name = "GetMusic"),]
-        public async Task<ActionResult<AppMusic>> GetMusic(string filename)
+        public async Task<ActionResult<MusicDto>> GetMusic(string filename)
         {
             var rtn = await _musicRepository.GetMusicByUserNameAsync(filename);
 

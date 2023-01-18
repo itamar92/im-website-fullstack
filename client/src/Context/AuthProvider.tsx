@@ -9,12 +9,12 @@ import {
 } from "react";
 import { IUser } from "../interface/IUser";
 
-interface AuthContextProps {
-  auth: IUser | any;
-  setAuth: (auth: IUser) => void;
-  loginDialog: boolean | null;
-  setLoginDialog: (loginDialog: SetStateAction<boolean>) => void;
-}
+// interface AuthContextProps {
+//   auth: IUser | any;
+//   setAuth: (auth: IUser) => void;
+//   loginDialog: boolean | null;
+//   setLoginDialog: (loginDialog: SetStateAction<boolean>) => void;
+// }
 
 type AuthContextType = {
   auth: IUser | any;

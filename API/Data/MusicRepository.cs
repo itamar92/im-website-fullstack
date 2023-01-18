@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Entities;
 using API.Interfaces;
+using API.DTOs;
 
 namespace API.Data
 {
@@ -16,9 +17,18 @@ namespace API.Data
         {
             _context = context;
         }
-        public async Task<IEnumerable<AppMusic>> GetMusicAsync()
+        public async Task<IEnumerable<MusicDto>> GetMusicAsync()
         {
             return await _context.Music
+            .Select(music => new MusicDto
+            {
+                Id = music.Id,
+                FileName = music.filename,
+                Artist = music.artist,
+                Description = music.description,
+                Tag = music.tag,
+                Url = music.url
+            })
              .ToListAsync();
         }
 
@@ -27,10 +37,21 @@ namespace API.Data
             return await _context.Music.FindAsync(id);
         }
 
-        public async Task<AppMusic> GetMusicByUserNameAsync(string filename)
+        public async Task<MusicDto> GetMusicByUserNameAsync(string filename)
         {
             return await _context.Music
-            .SingleOrDefaultAsync(x => x.filename == filename);
+            .Where(x => x.filename == filename)
+             .Select(music => new MusicDto
+             {
+                 Id = music.Id,
+                 FileName = music.filename,
+                 Artist = music.artist,
+                 Description = music.description,
+                 Tag = music.tag,
+                 Url = music.url
+             })
+            .SingleOrDefaultAsync();
+
         }
 
         public async Task<bool> SaveAllAsync()

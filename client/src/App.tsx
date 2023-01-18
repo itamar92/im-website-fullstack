@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import { urlUsers } from "./endpoints";
 import Navbar from "./Components/Navbar/Navbar";
 import Home from "./Pages/Home/Home";
-import colorTheme from "./colorTheme";
+import theme from "./theme";
 import { ThemeProvider } from "@emotion/react";
 import { UserContextProvider } from "./Context/UserContext";
 import Login from "./Components/Login/Login";
@@ -15,15 +15,15 @@ import Products from "./Pages/Products/Products";
 import { ScrollToSection } from "./Components/ScrollToSection";
 import About from "./Pages/Home/About";
 import Contact from "./Pages/Home/Contact";
+import { ProductsProvider } from "./Context/ProductsContext";
 
 function App() {
   return (
-    
-      <AuthProvider>
-        <ThemeProvider theme={colorTheme}>
-          
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <ProductsProvider>
           <Navbar />
-          <ScrollToSection/>
+          <ScrollToSection />
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route path="/" element={<Home />} />
@@ -32,10 +32,9 @@ function App() {
               <Route path="products" element={<Products />} />
             </Route>
           </Routes>
-       
-        </ThemeProvider>
-      </AuthProvider>
-    
+        </ProductsProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 
