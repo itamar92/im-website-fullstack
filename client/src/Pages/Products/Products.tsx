@@ -1,24 +1,16 @@
+import { Box, Paper, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import axios from "../../clientApi/axios";
 import { useMusicProvider } from "../../Context/ProductsContext";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import { IMusic } from "../../interface/IMusic";
-import { IProduct } from "../../interface/IProduct";
 import ProductCard from "./ProductCard";
 
 function Products() {
- //const {increaseCartQuantity} = useShoppingCart();
-  const {music, setMusic} = useMusicProvider();
-  const products: IProduct = {
-    "id": "1",
-    "name": "Chunky soul",
-    "artist": "Itamar Miron",
-    "art": "/Image/Logo_IM icon Black.png",
-    "media": "/Music/Chunky Soul.mp3",
-    "price": 10
-  }
+  //const {increaseCartQuantity} = useShoppingCart();
+  const { music, setMusic } = useMusicProvider();
 
   const getMusic = async () => {
     try {
@@ -41,19 +33,21 @@ function Products() {
 
   useEffect(() => {
     getMusic();
+    console.log(music);
   }, []);
 
   // const handleCart = (id:number ) => {
   //   increaseCartQuantity(id);
   // }
   return (
-    <Container sx={{mt:10}}>
+    <Container   sx={{ mt: 10, pb:{xs:30, md:20}}}>
+      <Grid container justifyContent={'center'}>
       <h1>Products</h1>
-     
-      
-        <ProductCard product={music}  />
-       
-      
+
+      <Grid container justifyContent={'center'} direction={'row'} pt={2} gap={2}  >
+        {music && music.map((item: IMusic) => <ProductCard key={item.id} product={item} />)}
+      </Grid>
+      </Grid>
     </Container>
   );
 }

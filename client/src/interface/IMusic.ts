@@ -1,6 +1,6 @@
 export interface IMusic {
     id: number;
-    filename: string;
+    fileName: string;
     artist: string;
     description: string;
     tag: string;
