@@ -2,7 +2,9 @@ import { Box, Paper, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import React, { useEffect } from "react";
-import axios from "../../clientApi/axios";
+// import axios from "../../interceptors/axios";
+import axios from "axios";
+import '../../interceptors/axios';
 import { useMusicProvider } from "../../Context/ProductsContext";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import { IMusic } from "../../interface/IMusic";
@@ -40,13 +42,22 @@ function Products() {
   //   increaseCartQuantity(id);
   // }
   return (
-    <Container   sx={{ mt: 10, pb:{xs:30, md:20}}}>
-      <Grid container justifyContent={'center'}>
-      <h1>Products</h1>
+    <Container sx={{ mt: 10, pb: { xs: 30, md: 20 } }}>
+      <Grid container justifyContent={"center"}>
+        <h1>Products</h1>
 
-      <Grid container justifyContent={'center'} direction={'row'} pt={2} gap={2}  >
-        {music && music.map((item: IMusic) => <ProductCard key={item.id} product={item} />)}
-      </Grid>
+        <Grid
+          container
+          justifyContent={"center"}
+          direction={"row"}
+          pt={2}
+          gap={2}
+        >
+          {music &&
+            music.map((item: IMusic) => (
+              <ProductCard key={item.id} product={item} />
+            ))}
+        </Grid>
       </Grid>
     </Container>
   );

@@ -30,9 +30,9 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MusicDto>>> GetMusic()
         {
-            var musicFiles = await _musicRepository.GetMusicAsync();
+            var musicFile = await _musicRepository.GetMusicAsync();
 
-            return Ok(musicFiles);
+            return Ok(musicFile);
         }
 
         [HttpGet("{filename}", Name = "GetMusic"),]
@@ -41,6 +41,28 @@ namespace API.Controllers
             var rtn = await _musicRepository.GetMusicByUserNameAsync(filename);
 
             return rtn;
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateMusic(MusicDtoUpdate musicDtoUpdate)
+        {
+            
+           var musicFile = await _musicRepository.GetMusicAsync();
+
+            // var newMusicFile = musicFile {
+            //     description = musicDtoUpdate.Description,
+            //     Category = musicDtoUpdate.Category
+            // };
+
+            // _musicRepository.Update(newMusicFile);
+
+
+            if (await _musicRepository.SaveAllAsync())
+            {
+                return NoContent();
+            }
+            return BadRequest("Failed to update user");
+
         }
 
         [HttpPost("add-music")]
@@ -55,7 +77,6 @@ namespace API.Controllers
             }
             var music = new AppMusic
             {
-                asset_id = result.AssetId,
                 filename = ConvertPublicIdToName(result.PublicId),
                 artist = "Itamar Miron",
                 url = result.SecureUrl.AbsoluteUri,

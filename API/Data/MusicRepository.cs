@@ -26,7 +26,6 @@ namespace API.Data
                 FileName = music.filename,
                 Artist = music.artist,
                 Description = music.description,
-                Tag = music.tag,
                 Url = music.url
             })
              .ToListAsync();
@@ -47,8 +46,7 @@ namespace API.Data
                  FileName = music.filename,
                  Artist = music.artist,
                  Description = music.description,
-                 Tag = music.tag,
-                 Url = music.url
+                 Url = music.url,
              })
             .SingleOrDefaultAsync();
 

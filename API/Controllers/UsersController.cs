@@ -27,6 +27,16 @@ namespace API.Controllers
             var users = await _context.Users.ToListAsync();
             return users;
         }
+
+         [HttpGet("{username}", Name = "GetUser"),]
+        public async Task<ActionResult<AppUser>> GetUser(string username)
+        {
+           var rtn = await _context.Users.Where(x => x.UserName == username).SingleOrDefaultAsync();
+
+           return rtn;
+
+            
+        }
         [Authorize] 
         [HttpGet("{id}")] // api/users/1
 

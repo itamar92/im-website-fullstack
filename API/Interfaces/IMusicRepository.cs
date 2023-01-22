@@ -16,7 +16,6 @@ namespace API.Interfaces
         Task<IEnumerable<MusicDto>> GetMusicAsync();
         Task<AppMusic> GetMusicByIdAsync(int id);
         Task<MusicDto> GetMusicByUserNameAsync(string filename);
-
-
+        
     }
 }

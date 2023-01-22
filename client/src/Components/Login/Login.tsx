@@ -1,44 +1,36 @@
 //#region IMPORTS
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  useContext,
-  SetStateAction,
-} from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
 import { useAuthProvider } from "../../Context/AuthProvider";
-import axios from "../../clientApi/axios";
+//import axios from "../../interceptors/axios";
+import axios from "axios";
+import '../../interceptors/axios';
 import { IUser } from "../../interface/IUser";
 import Container from "@mui/system/Container";
 import FormControl from "@mui/material/FormControl";
-import Backdrop from "@mui/material/Backdrop";
-import ClickAwayListener from "@mui/base/ClickAwayListener";
 import Box from "@mui/system/Box";
 import {
   Button,
+  Dialog,
+  DialogTitle,
   IconButton,
   InputAdornment,
   OutlinedInput,
+  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 //#endregion
 type LoginProps = {
-  isDialogOpen: SetStateAction<boolean> | any;
+  isOpen: boolean;
   //setIsDialogOpen: SetStateAction<boolean> | any;
 };
 
-const Login = () => {
+const Login = ({ isOpen }: LoginProps) => {
   // const authContext = useContext(AuthContext);
-  const { auth, setAuth, loginDialog, setLoginDialog } = useAuthProvider();
+  const { auth, setAuth, closeDialog, setIsLoggedIn } = useAuthProvider();
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLParagraphElement>(null);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
 
-  const [dropOpen, setOpen] = useState(loginDialog);
   const [showPassword, setShowPassword] = useState(false);
   const [userName, setUserName] = useState("");
   const [password, setPwd] = useState("");
@@ -54,7 +46,7 @@ const Login = () => {
   };
 
   const handleClickAway = () => {
-    setLoginDialog(!loginDialog);
+    closeDialog();
     //setOpen(false);
     //navigate(from, { replace: true });
   };
@@ -63,7 +55,7 @@ const Login = () => {
     if (userRef.current) {
       userRef.current.focus();
     }
-    console.log(loginDialog);
+    console.log(isOpen);
   }, []);
 
   useEffect(() => {
@@ -75,22 +67,25 @@ const Login = () => {
 
     try {
       const response = await axios.post<IUserRequest, { data: IUser }>(
-        LOGIN_URL,
+        "account/login",
         {
           userName,
           password,
         },
         {
           headers: { "Access-Control-Allow-Origin": "*" },
-        }
+        },
       );
-      console.log(response.data);
       setAuth(response.data);
       setUserName("");
       setPwd("");
       setSuccess(true);
-      setOpen(!loginDialog);
-      console.log(auth);
+      closeDialog();
+      setIsLoggedIn(true);
+
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Brearer ${response.data.token}`;
     } catch (err: any) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -113,100 +108,101 @@ const Login = () => {
   }, [success]);
 
   return (
-    <Backdrop sx={{ color: "#fff", zIndex: 1 }} open={dropOpen}>
-      <ClickAwayListener onClickAway={handleClickAway}>
-        <Container
-          maxWidth="lg"
-          sx={{ display: "contents", justifyItems: "center" }}
+    <Dialog
+      onClose={handleClickAway}
+      open={isOpen}
+      PaperProps={{ color: "#4291b8" }}
+    >
+      <Container
+        maxWidth="lg"
+        sx={{
+          display: "contents",
+          justifyItems: "center",
+          borderBlock: 2,
+          borderBlockColor: "#4291b8",
+        }}
+      >
+        <Box
+          sx={{
+            p: 3,
+
+            backgroundColor: "#2c2c6c",
+            borderRadius: "3%",
+            justifyContent: "center",
+          }}
         >
-          <Box
-            sx={{
-              p: 3,
-              pl: 9,
-              width: "400px",
-              backgroundColor: "#2c2c6c",
-              borderRadius: "5%",
-            }}
-          >
-            <div>
-              <p
-                ref={errRef}
-                className={errMsg ? "errmsg" : "offscreen"}
-                aria-live="assertive"
-              >
-                {errMsg}
-              </p>
-              <h1>Sign In</h1>
+          <Box m={3}>
+            <p
+              ref={errRef}
+              className={errMsg ? "errmsg" : "offscreen"}
+              aria-live="assertive"
+            >
+              {errMsg}
+            </p>
+            <DialogTitle variant={"inherit"} color={"white"}>
+              Sign In
+            </DialogTitle>
 
-              <Box sx={{ maxWidth: "300px" }}>
-                <form onSubmit={handleSubmit}>
-                  <FormControl sx={{ marginBottom: 2, width: "250px" }}>
-                    <OutlinedInput
-                      sx={{ background: "white" }}
-                      type="text"
-                      id="username"
-                      placeholder="Username"
-                      ref={userRef}
-                      autoComplete="off"
-                      onChange={(e) => setUserName(e.target.value)}
-                      value={userName}
-                      required
-                    />
-                  </FormControl>
-                  <FormControl sx={{ marginBottom: 2, width: "250px" }}>
-                    <OutlinedInput
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Password"
-                      onChange={(e) => setPwd(e.target.value)}
-                      value={password}
-                      required
-                      sx={{ background: "white" }}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      label="Password"
-                    />
-                  </FormControl>
+            <Box sx={{ maxWidth: "300px" }}>
+              <form onSubmit={handleSubmit}>
+                <FormControl sx={{ marginBottom: 2, width: "250px" }}>
+                  <OutlinedInput
+                    sx={{ background: "white" }}
+                    type="text"
+                    id="username"
+                    placeholder="Username"
+                    ref={userRef}
+                    autoComplete="off"
+                    onChange={(e) => setUserName(e.target.value)}
+                    value={userName}
+                    required
+                  />
+                </FormControl>
+                <FormControl sx={{ mb: 2, width: "250px" }}>
+                  <OutlinedInput
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    onChange={(e) => setPwd(e.target.value)}
+                    value={password}
+                    required
+                    autoComplete=""
+                    sx={{ background: "white" }}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton onClick={handleClickShowPassword}>
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                  />
+                </FormControl>
 
-                  <Button sx={{ mb: 2 }} type="submit" variant="contained">
-                    Sign In
-                  </Button>
-                </form>
-              </Box>
+                <Button sx={{ mb: 2 }} type="submit" variant="contained">
+                  Sign In
+                </Button>
+              </form>
+            </Box>
 
-              <p>
-                Need an Account?
-                <br />
-                <span className="line">
-                  {/*put router link here*/}
-                  <a href="#">Sign Up</a>
-                </span>
-              </p>
-            </div>
+            <Typography variant={"inherit"} color={"#fff"}>
+              Need an Account?
+              <br />
+              <span className="line">
+                {/*put router link here*/}
+                <a href="#">Sign Up</a>
+              </span>
+            </Typography>
           </Box>
-        </Container>
-      </ClickAwayListener>
-    </Backdrop>
+        </Box>
+      </Container>
+    </Dialog>
   );
 };
 
-const LOGIN_URL = "/account/login";
 
 interface IUserRequest {
   userName: string;
   password: string;
 }
-
-
 
 export default Login;

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useContext, useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
-import { Link } from "@mui/material";
+import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -21,6 +21,8 @@ import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import LoginControl from "../Login/LoginControl";
 import Login from "../Login/Login";
 import { useAuthProvider } from "../../Context/AuthProvider";
+import { useShoppingCart } from "../../Context/ShoppingCartContext";
+import { Grid, linkClasses, Stack } from "@mui/material";
 
 //#region SEARCH BAR
 const Search = styled("div")(({ theme }) => ({
@@ -69,7 +71,8 @@ export default function Navbar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
   //const authContext = useContext(AuthContext);
-  const { loginDialog, setLoginDialog } = useAuthProvider();
+  const { openDialog, closeDialog, isLoggedIn } = useAuthProvider();
+  const { openCart, cartQuantity } = useShoppingCart();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -115,7 +118,7 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <button onClick={() => setLoginDialog(true)}>Sign In</button>
+        <button onClick={openDialog}>Sign In</button>
       </MenuItem>
       <MenuItem>My account</MenuItem>
     </Menu>
@@ -138,11 +141,9 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => setLoginDialog(true)}>Sign In</MenuItem>
+      <MenuItem onClick={() => openDialog()}>Sign In</MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
-        <Link color="inherit" underline="none" href="login">
-          Sign Up
-        </Link>
+        <Link to="login">Sign Up</Link>
       </MenuItem>
     </Menu>
   );
@@ -181,66 +182,54 @@ export default function Navbar() {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
-                  <Link color="inherit" underline="none" href="/">
-                    Home
-                  </Link>
-                </Typography>
+                <StyledLink to="/" color="black">
+                  Home
+                </StyledLink>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
-                  {" "}
-                  <Link color="inherit" underline="none" href="/#about">
-                    About
-                  </Link>
-                </Typography>
+                <StyledLink to="/#about" color="black">
+                  About
+                </StyledLink>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
-                  {" "}
-                  <Link color="inherit" underline="none" href="/products">
-                    Products
-                  </Link>
-                </Typography>
+                <StyledLink to="/products" color="black">
+                  Products
+                </StyledLink>
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">
-                  {" "}
-                  <Link color="inherit" underline="none" href="/#contact">
-                    Contact
-                  </Link>
-                </Typography>
+                <StyledLink to="/#contact" color="black">
+                  Contact
+                </StyledLink>
               </MenuItem>
             </Menu>
           </Box>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            component="a"
-            href=""
-            sx={{ ml: 1 }}
-          >
-            <GraphicEqIcon
-              sx={{ display: { xs: "flex", md: "flex" }, mr: 1 }}
-            />
-            <Typography
-              variant="h5"
-              noWrap
-              sx={{
-                mr: 1,
-                display: { xs: "flex", md: "flex" },
-                flexGrow: 1,
-                fontFamily: "monospace",
-                fontWeight: 700,
-                letterSpacing: ".3rem",
-                color: "inherit",
-                textDecoration: "none",
-              }}
+          <StyledLink to="/">
+            <Stack
+              direction={"row"}
+              alignItems="center"
+              sx={{ ml: { xs: 0, md: 2 } }}
             >
-              IM
-            </Typography>
-          </IconButton>
+              <GraphicEqIcon
+                sx={{ display: { xs: "flex", md: "flex" }, mr: 1 }}
+              />
+              <Typography
+                variant="h5"
+                noWrap
+                sx={{
+                  mr: 1,
+                  display: { xs: "flex", md: "flex" },
+                  flexGrow: 1,
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                IM
+              </Typography>
+            </Stack>
+          </StyledLink>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -252,56 +241,21 @@ export default function Navbar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, mr: 5 }}>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              <Link color="inherit" variant="body2" underline="none" href="/">
-                Home
-              </Link>
+            <Button onClick={handleCloseNavMenu}>
+              <StyledLink to="/">Home</StyledLink>
             </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              <Link
-                color="inherit"
-                variant="body2"
-                underline="none"
-                href="/#about"
-              >
-                About
-              </Link>
+            <Button onClick={handleCloseNavMenu}>
+              <StyledLink to="/#about">About</StyledLink>
             </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              <Link
-                color="inherit"
-                variant="body2"
-                underline="none"
-                href="/products"
-              >
-                Products
-              </Link>
+            <Button onClick={handleCloseNavMenu}>
+              <StyledLink to="/products">Products</StyledLink>
             </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-            >
-              <Link
-                color="inherit"
-                variant="body2"
-                underline="none"
-                href="/#contact"
-              >
-                Contact
-              </Link>
+            <Button onClick={handleCloseNavMenu}>
+              <StyledLink to="/#contact">Contact</StyledLink>
             </Button>
           </Box>
-          <IconButton size="large" color="inherit">
-            <Badge badgeContent={17} color="error">
+          <IconButton size="large" color="inherit" onClick={openCart}>
+            <Badge badgeContent={cartQuantity} color="error">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
@@ -312,13 +266,9 @@ export default function Navbar() {
               justifyContent: "center",
             }}
           >
-            <IconButton color="inherit" onClick={() => setLoginDialog(true)}>
+            <Button color="inherit" onClick={openDialog}>
               <LoginControl />
-            </IconButton>
-            <Login
-            // isDialogOpen={loginDialog}
-            // setIsDialogOpen={loginDialog}
-            />
+            </Button>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -339,3 +289,24 @@ export default function Navbar() {
     </Box>
   );
 }
+
+const StyledLink: React.FC<
+  React.PropsWithChildren<{ to: string; color?: string }>
+> = ({ children, to, color = "white" }) => {
+  return (
+    <Box
+      sx={{
+        [`>*`]: {
+          textDecoration: "none",
+          color,
+          ":hover": { color: "#2dd7d7" },
+          "&:active": {
+            color: "light-blue",
+          },
+        },
+      }}
+    >
+      <Link to={to}>{children}</Link>
+    </Box>
+  );
+};

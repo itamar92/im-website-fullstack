@@ -27,6 +27,7 @@ import {
 } from "@mui/icons-material";
 import { hover } from "@testing-library/user-event/dist/hover";
 import { height } from "@mui/system";
+import { useShoppingCart } from "../../Context/ShoppingCartContext";
 
 interface Props {
   product: IMusic;
@@ -42,6 +43,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
   const [isMuted, setMuted] = useState(false);
   const [isVolumeOpen, setIsVolumeOpen] = useState(false);
   const [volumeSliderHeight, setVolumeHeight] = useState(0);
+  const { increaseCartQuantity, decreaseCartQuantity } = useShoppingCart();
 
   const theme = useTheme();
 
@@ -248,14 +250,21 @@ const ProductCard: React.FC<Props> = ({ product }) => {
             }}
           />
         </ListItem>
-        <ListItem  alignItems="center"
-          secondaryAction={<Button variant="contained" color="info">
-          {" "}
-          Add to cart
-        </Button>}>
-        <Typography color={'white'} sx={{pl:6}}>$3</Typography>
-
-
+        <ListItem
+          alignItems="center"
+          secondaryAction={
+            <Button
+              variant="contained"
+              color="info"
+              onClick={() => increaseCartQuantity(product.id)}
+            >
+              Add to cart
+            </Button>
+          }
+        >
+          <Typography color={"white"} sx={{ pl: 6 }}>
+            $3
+          </Typography>
         </ListItem>
       </List>
     </Paper>

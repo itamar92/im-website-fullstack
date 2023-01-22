@@ -17,7 +17,9 @@
     "is_audio": true,
     "artist": "Itamar Miron",
     "description": "Fun funky music",
-    "tag": "funky"
+    "tag": "funky",
+    "quantity": 0,
+    "price": 3
   },
   {
     "filename": "Happy Corporate",
@@ -37,7 +39,9 @@
     "is_audio": true,
     "artist": "Itamar Miron",
     "description": "Fun corporate music",
-    "tag": "corporaite"
+    "tag": "corporaite",
+    "quantity": 0,
+    "price": 3
   },
   {
     "filename": "Unknown Land",
@@ -57,7 +61,9 @@
     "is_audio": true,
     "artist": "Itamar Miron",
     "description": "Mysterious Cinematic music",
-    "tag": "cinematic"
+    "tag": "cinematic",
+    "quantity": 0,
+    "price": 3
   },
   {
     "filename": "Rock Indie Trailer",
@@ -77,7 +83,9 @@
     "is_audio": true,
     "artist": "Itamar Miron",
     "description": "Short Music for powerful Trailer",
-    "tag": "Rock"
+    "tag": "Rock",
+    "quantity": 0,
+    "price": 3
   },
   {
     "filename": "Sonokinetic_Competition",
@@ -97,6 +105,8 @@
     "is_audio": true,
     "artist": "Itamar Miron",
     "description": "Future Cinematic Trailer",
-    "tag": "cinematic"
+    "tag": "cinematic",
+    "quantity": 0,
+    "price": 3
   }
 ]

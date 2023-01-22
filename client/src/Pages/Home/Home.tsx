@@ -8,6 +8,7 @@ import Contact from "./Contact";
 import "./homeStyles.css";
 
 function Home() {
+  console.log("home Component");
   return (
     <div className="header">
       <Container>
