@@ -26,10 +26,6 @@ namespace API.Data
             {
                 // adding the files to our db
 
-                
-
-
-
                 context.Music.Add(file); // this is not the actual adding, only tracking the operation
             }
 

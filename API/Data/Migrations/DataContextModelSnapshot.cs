@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace API.Data.Migrations
+namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -25,9 +25,6 @@ namespace API.Data.Migrations
                     b.Property<string>("artist")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("asset_id")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("description")
                         .HasColumnType("TEXT");
 
@@ -35,9 +32,6 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("public_id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("tag")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("url")
@@ -68,6 +62,12 @@ namespace API.Data.Migrations
 
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("BLOB");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
                         .HasColumnType("TEXT");

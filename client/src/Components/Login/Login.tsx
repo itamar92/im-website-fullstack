@@ -33,7 +33,7 @@ const Login = ({ isOpen }: LoginProps) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [userName, setUserName] = useState("");
-  const [password, setPwd] = useState("");
+  const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
@@ -55,7 +55,6 @@ const Login = ({ isOpen }: LoginProps) => {
     if (userRef.current) {
       userRef.current.focus();
     }
-    console.log(isOpen);
   }, []);
 
   useEffect(() => {
@@ -76,16 +75,17 @@ const Login = ({ isOpen }: LoginProps) => {
           headers: { "Access-Control-Allow-Origin": "*" },
         },
       );
+      console.log(response.data);
       setAuth(response.data);
       setUserName("");
-      setPwd("");
+      setPassword("");
       setSuccess(true);
       closeDialog();
       setIsLoggedIn(true);
 
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Brearer ${response.data.token}`;
+      // axios.defaults.headers.common[
+      //   "Authorization"
+      // ] = `Brearer ${response.data.token}`;
     } catch (err: any) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -105,6 +105,8 @@ const Login = ({ isOpen }: LoginProps) => {
   useEffect(() => {
     //console.log(authContext?.auth);
     localStorage.setItem("user", JSON.stringify(auth));
+    // localStorage.setItem("jwt", JSON.stringify(auth.token));
+    // localStorage.setItem("refresh", JSON.stringify(auth.refreshToken));
   }, [success]);
 
   return (
@@ -162,7 +164,7 @@ const Login = ({ isOpen }: LoginProps) => {
                   <OutlinedInput
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    onChange={(e) => setPwd(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     value={password}
                     required
                     autoComplete=""

@@ -115,7 +115,7 @@ namespace API.Controllers
             return await _context.Music.AnyAsync(x => x.public_id == publicId);
         }
 
-        public string ConvertPublicIdToName(string name)
+        private string ConvertPublicIdToName(string name)
         {
             
             name = name.Replace("/", " ");

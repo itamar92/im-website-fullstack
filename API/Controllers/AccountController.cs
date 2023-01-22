@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using API.Data;
@@ -45,7 +48,8 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                RefreshToken = _tokenService.CreateRefreshToken()
             };
         }
 
@@ -64,11 +68,23 @@ namespace API.Controllers
                 if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid username or password");
             }
 
+            //  var claims = new List<Claim>
+            // {
+            //     new Claim(ClaimTypes.Name, UserDto.Username),
+            //     new Claim(ClaimTypes.Role, "Manager")
+            // };
+            var accessToken = _tokenService.CreateToken(user);
+            var refreshToken = _tokenService.CreateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+
             return new UserDto
             {
                 Username = user.UserName,
                 Firstname = user.FirstName,
-                Token = _tokenService.CreateToken(user)
+                Token = accessToken,
+                RefreshToken = refreshToken
             };
 
 

@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace API.Data.Migrations
+namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230117002443_MusicPhotosUpdate")]
-    partial class MusicPhotosUpdate
+    [Migration("20230122165042_initialMigrate")]
+    partial class initialMigrate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,9 +27,6 @@ namespace API.Data.Migrations
                     b.Property<string>("artist")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("asset_id")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("description")
                         .HasColumnType("TEXT");
 
@@ -37,9 +34,6 @@ namespace API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("public_id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("tag")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("url")
@@ -70,6 +64,12 @@ namespace API.Data.Migrations
 
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("BLOB");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
                         .HasColumnType("TEXT");
