@@ -9,19 +9,22 @@ using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace API.Controllers
 {
     public class AccountController : BaseApiController
     {
         private readonly DataContext _context;
-
+        // private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ITokenService _tokenService;
         public AccountController(DataContext context, ITokenService tokenService)
         {
             _tokenService = tokenService;
             _context = context;
+            // _roleManager = roleManager;
         }
 
         [HttpPost("register")] // POST api/account/register
@@ -68,11 +71,13 @@ namespace API.Controllers
                 if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid username or password");
             }
 
-            //  var claims = new List<Claim>
-            // {
-            //     new Claim(ClaimTypes.Name, UserDto.Username),
-            //     new Claim(ClaimTypes.Role, "Manager")
-            // };
+            //var userRoles = await _context.Users.
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
             var accessToken = _tokenService.CreateToken(user);
             var refreshToken = _tokenService.CreateRefreshToken();
 

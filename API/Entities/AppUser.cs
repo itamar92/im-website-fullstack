@@ -19,6 +19,6 @@ namespace API.Entities
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
 
-        // public ICollection<Order> Orders { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }

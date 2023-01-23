@@ -4,26 +4,25 @@
     overflow: hidden;
 }
 
+.header__hero{
+    background: radial-gradient( #211e26 20%, transparent 100%);
+    border-radius:2rem ;
+  
+}
+
 .header__container{
+    /* background-image:url(../../assents/IM_Header.png) ;
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: cover; */
     display: flex;
     flex-grow: 1;
     align-items: center;
     justify-content: center;
     text-align: match-parent;
-    height: 100%;
-    padding: 2rem;
+    height: 80%;
     padding-bottom: 1rem;
-    position: relative;
-    animation: Header 1s ease 0s 1 normal forwards;
-    @keyframes Header {
-        0% {
-            opacity: 0;
-        }
-    
-        100% {
-            opacity: 1;
-        }
-    }
+   
     
 }
 .header h1,h2,h3,h4,h5 {
@@ -107,10 +106,8 @@
 
 /* ===================================  MEDIA QUERIES (MEDIUM DEVICES) =================================== */
 @media screen and (max-width: 1024px) {
-    .header {
-        /* height: 68vh; */
-        }
-    }
+  
+    
 
     .header__container{
         height:fit-content;
@@ -139,14 +136,13 @@
   .about__content p {
       margin: 1rem 0 1.5rem;
   }
+}
 
   
   
   /* ===================================  MEDIA QUERIES (SMALL DEVICES) =================================== */
   @media screen and (max-width: 600px) {
-    .header {
-        /* height: 100vh; */
-         }
+    
 
          .header__socials,
          .scroll__down {

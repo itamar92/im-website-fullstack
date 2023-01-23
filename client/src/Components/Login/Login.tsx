@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useAuthProvider } from "../../Context/AuthProvider";
 //import axios from "../../interceptors/axios";
 import axios from "axios";
-import '../../interceptors/axios';
+import "../../interceptors/axios";
 import { IUser } from "../../interface/IUser";
 import Container from "@mui/system/Container";
 import FormControl from "@mui/material/FormControl";
@@ -73,9 +73,9 @@ const Login = ({ isOpen }: LoginProps) => {
         },
         {
           headers: { "Access-Control-Allow-Origin": "*" },
-        },
+        }
       );
-      console.log(response.data);
+      console.log("login response:" + response);
       setAuth(response.data);
       setUserName("");
       setPassword("");
@@ -83,15 +83,17 @@ const Login = ({ isOpen }: LoginProps) => {
       closeDialog();
       setIsLoggedIn(true);
 
-      // axios.defaults.headers.common[
-      //   "Authorization"
-      // ] = `Brearer ${response.data.token}`;
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Brearer ${response.data.token}`;
     } catch (err: any) {
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else if (err.response?.status === 400) {
         setErrMsg("Missing Username or Password");
       } else if (err.response?.status === 401) {
+        setErrMsg("Unauthorized");
+      } else if (err.response?.status === 500) {
         setErrMsg("Unauthorized");
       } else {
         setErrMsg("Login Failed");
@@ -104,16 +106,19 @@ const Login = ({ isOpen }: LoginProps) => {
 
   useEffect(() => {
     //console.log(authContext?.auth);
-    localStorage.setItem("user", JSON.stringify(auth));
-    // localStorage.setItem("jwt", JSON.stringify(auth.token));
-    // localStorage.setItem("refresh", JSON.stringify(auth.refreshToken));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ firstname: auth.firstname, username: auth.username })
+    );
+    localStorage.setItem("jwt", JSON.stringify(auth.token));
+    localStorage.setItem("refresh", JSON.stringify(auth.refreshToken));
   }, [success]);
 
   return (
     <Dialog
       onClose={handleClickAway}
       open={isOpen}
-      PaperProps={{ color: "#4291b8" }}
+      sx={{ "& .MuiPaper-root": { backgroundColor: "#000451 " } }}
     >
       <Container
         maxWidth="lg"
@@ -200,7 +205,6 @@ const Login = ({ isOpen }: LoginProps) => {
     </Dialog>
   );
 };
-
 
 interface IUserRequest {
   userName: string;
