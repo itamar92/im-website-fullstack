@@ -18,6 +18,7 @@ import Contact from "./Pages/Home/Contact";
 import { ProductsProvider } from "./Context/ProductsContext";
 import { ShoppingCartProvider } from "./Context/ShoppingCartContext";
 import AppRoutes from "./Components/AppRoutes";
+import Footer from "./Components/Footer";
 
 function App() {
 const {setLoggedInUser} = useAuthProvider();
@@ -35,6 +36,7 @@ const {setLoggedInUser} = useAuthProvider();
               <Navbar />
               <AppRoutes />
               <ScrollToSection />
+              <Footer/>
             </BrowserRouter>
           </ShoppingCartProvider>
         </ProductsProvider>

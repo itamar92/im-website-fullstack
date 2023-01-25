@@ -11,6 +11,6 @@ namespace API.Entities
         public int ProductId { get; set; }
         public string ImageUrl { get; set; }
 
-        public Product Product { get; set; }
+        // public Product Product { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-import { Box, FormControl, Grid, OutlinedInput } from "@mui/material";
+import { Box, FormControl, Grid, OutlinedInput, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Container } from "@mui/system";
 import EmailIcon from "@mui/icons-material/Email";
@@ -10,10 +10,10 @@ function Contact() {
   return (
     <section id="contact">
       <Container >
-        <h2>Contact Me</h2>
-        <Grid container spacing={2} alignItems="center" pt={4}>
-          <Grid container direction={"column"} className="contact__options" item lg={4} mr={10}>
-            <Grid>
+        <Typography variant="h3" justifyContent={'center'} sx={{display:'flex'}}>Contact Me</Typography>
+        <Grid container spacing={2} alignItems="center" pt={4} justifyContent={'center'}>
+          <Grid container direction={"column"} className="contact__options" item lg={4} mr={10} ml={{xs:10}}>
+            <Grid  >
               <Box
                 className="contact__option"
                 sx={{
@@ -21,6 +21,7 @@ function Contact() {
                   alignItems: "center",
                 }}
                 p={4}
+               
               >
                 <EmailIcon className="contact__option-icon" />
                 <h4>Email</h4>

@@ -12,7 +12,7 @@ namespace API.Entities
     public DateTime OrderDate { get; set; }
     public decimal TotalPrice { get; set; }
 
-    public AppUser User { get; set; }
-    public ICollection<OrderDetail> OrderDetails { get; set; }
+    // public AppUser User { get; set; }
+    // public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

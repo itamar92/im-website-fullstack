@@ -25,9 +25,9 @@ import {
   VolumeOffRounded,
   VolumeUpRounded,
 } from "@mui/icons-material";
-import { hover } from "@testing-library/user-event/dist/hover";
-import { height } from "@mui/system";
+import {Wave} from "@foobar404/wave";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
+import './musicStyles.css'
 
 interface Props {
   product: IMusic;
@@ -44,6 +44,15 @@ const ProductCard: React.FC<Props> = ({ product }) => {
   const [isVolumeOpen, setIsVolumeOpen] = useState(false);
   const [volumeSliderHeight, setVolumeHeight] = useState(0);
   const { increaseCartQuantity, decreaseCartQuantity } = useShoppingCart();
+  // let audioElement = document.getElementById("audio_element") as HTMLAudioElement;
+  // let canvasElement = document.getElementById("canvas_element")as HTMLCanvasElement;
+
+  // if(audioElement !== null || canvasElement !== null){
+  //   const waveAnimation = new Wave(audioElement, canvasElement);
+  //  waveAnimation.addAnimation(new waveAnimation.animations.Flower());
+  // }
+
+ 
 
   const theme = useTheme();
 
@@ -91,11 +100,6 @@ const ProductCard: React.FC<Props> = ({ product }) => {
     setDuration(audioRef.current!.duration);
   };
 
-  const handleMute = () => {
-    setMuted(!isMuted);
-    audioRef.current!.muted = !audioRef.current!.muted;
-  };
-
   const handleVolumeOpen = () => {
     setIsVolumeOpen((prev) => !prev);
     !isVolumeOpen ? setVolumeHeight(50) : setVolumeHeight(0);
@@ -104,6 +108,10 @@ const ProductCard: React.FC<Props> = ({ product }) => {
   useEffect(() => {
     audioRef.current!.volume = volume;
   }, [volume]);
+
+  useEffect(() => {
+   
+  }, []);
 
   return (
     <Paper
@@ -114,7 +122,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
         width: "40rem",
       }}
     >
-      <audio
+      <audio id="audio_element"
         ref={audioRef}
         src={product.url}
         onPlay={handleTimeUpdate}
@@ -124,8 +132,9 @@ const ProductCard: React.FC<Props> = ({ product }) => {
       />
       <List dense={true}>
         <ListItem>
-          <ListItemAvatar>
-            <Avatar src={LOGO} alt="logo" sx={{ width: 56, height: 56 }} />
+          <ListItemAvatar sx={{borderRadius:'100%'}} >
+            {/* <canvas width={66} height={66} id="canvas_element"/> */}
+            <Avatar className={isPlaying? "animation__spin":""} src={LOGO} alt="logo" sx={{ width: 66, height: 66}} />
           </ListItemAvatar>
           <ListItemText
             color="primary"

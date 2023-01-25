@@ -24,47 +24,7 @@ import { useAuthProvider } from "../../Context/AuthProvider";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import { Grid, linkClasses, Stack } from "@mui/material";
 
-//#region SEARCH BAR
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(0),
-  marginLeft: 0,
-  width: "90%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(0),
-    width: "auto",
-  },
-}));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
-//#endregion
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -73,6 +33,7 @@ export default function Navbar() {
   //const authContext = useContext(AuthContext);
   const { openDialog, closeDialog, isLoggedIn } = useAuthProvider();
   const { openCart, cartQuantity } = useShoppingCart();
+  const [scroll, setScroll] = useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -99,6 +60,22 @@ export default function Navbar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScroll(true);
+      } else {
+        setScroll(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -149,8 +126,8 @@ export default function Navbar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1, background:`transparent`}}>
-      <AppBar position="fixed">
+    <Box sx={{ flexGrow: 1}}>
+      <AppBar position="fixed" color={`${scroll ? 'primary' : 'transparent'}`}  >
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -182,7 +159,7 @@ export default function Navbar() {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <StyledLink to="/" color="black">
+                <StyledLink to="/#head" color="black">
                   Home
                 </StyledLink>
               </MenuItem>
@@ -203,7 +180,7 @@ export default function Navbar() {
               </MenuItem>
             </Menu>
           </Box>
-          <StyledLink to="/">
+          <StyledLink to="/#head">
             <Stack
               direction={"row"}
               alignItems="center"
@@ -242,7 +219,7 @@ export default function Navbar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, mr: 5 }}>
             <Button onClick={handleCloseNavMenu}>
-              <StyledLink to="/">Home</StyledLink>
+              <StyledLink to="/#head">Home</StyledLink>
             </Button>
             <Button onClick={handleCloseNavMenu}>
               <StyledLink to="/#about">About</StyledLink>
@@ -290,11 +267,54 @@ export default function Navbar() {
   );
 }
 
+//#region SEARCH BAR
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(0),
+  marginLeft: 0,
+  width: "90%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(0),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
+//#endregion
+
 const StyledLink: React.FC<
   React.PropsWithChildren<{ to: string; color?: string }>
 > = ({ children, to, color = "white" }) => {
   return (
     <Box
+    
       sx={{
         [`>*`]: {
           textDecoration: "none",

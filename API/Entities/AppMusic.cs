@@ -15,7 +15,7 @@ namespace API.Entities
         public string description { get; set; }
         public string url { get; set; }
         public string public_id { get; set; }
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
+        // public int ProductId { get; set; }
+        // public Product Product { get; set; }
     }
 }
