@@ -1,0 +1,23 @@
+[
+  {
+    "UserName": "itamar92",
+    "FirstName": "Itamar",
+    "LastName": "Miron",
+    "Email": "mail@gmail.com",
+    "Password": "Pa$$w0rd"
+  },
+  {
+    "UserName": "noam12",
+    "FirstName": "Noam",
+    "LastName": "Toy",
+    "Email": "noammail@gmail.com",
+    "Password": "Pa$$w0rd"
+  },
+  {
+    "UserName": "ido22",
+    "FirstName": "Ido",
+    "LastName": "Tzure",
+    "Email": "idomail@gmail.com",
+    "Password": "Pa$$w0rd"
+  }
+]

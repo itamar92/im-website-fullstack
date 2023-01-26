@@ -44,11 +44,10 @@ namespace API
 
             services.AddCors();
 
-             services.AddIdentityServices(_config);
+            services.AddIdentityServices(_config);
            
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -63,7 +62,8 @@ namespace API
             app.UseRouting();
 
             app.UseCors(policy =>
-            policy.AllowAnyHeader()
+            policy
+            .AllowAnyHeader()
             .AllowAnyMethod()
             .WithOrigins("https://localhost:3000")
             );
