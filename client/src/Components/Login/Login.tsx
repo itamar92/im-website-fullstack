@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useAuthProvider } from "../../Context/AuthProvider";
 //import axios from "../../interceptors/axios";
 import axios from "axios";
+import * as storage from "../../Utility/LocalStorage";
 import "../../interceptors/axios";
 import { IUser } from "../../interface/IUser";
 import Container from "@mui/system/Container";
@@ -27,7 +28,8 @@ type LoginProps = {
 
 const Login = ({ isOpen }: LoginProps) => {
   // const authContext = useContext(AuthContext);
-  const { auth, setAuth, closeDialog, setIsLoggedIn } = useAuthProvider();
+  const { auth, setAuth, closeLoginDialog, openRegisterDialog, setIsLoggedIn } =
+    useAuthProvider();
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLParagraphElement>(null);
 
@@ -46,9 +48,14 @@ const Login = ({ isOpen }: LoginProps) => {
   };
 
   const handleClickAway = () => {
-    closeDialog();
+    closeLoginDialog();
     //setOpen(false);
     //navigate(from, { replace: true });
+  };
+
+  const onSignUpClick = () => {
+    closeLoginDialog();
+    openRegisterDialog();
   };
 
   useEffect(() => {
@@ -80,7 +87,7 @@ const Login = ({ isOpen }: LoginProps) => {
       setUserName("");
       setPassword("");
       setSuccess(true);
-      closeDialog();
+      closeLoginDialog();
       setIsLoggedIn(true);
 
       axios.defaults.headers.common[
@@ -106,12 +113,12 @@ const Login = ({ isOpen }: LoginProps) => {
 
   useEffect(() => {
     //console.log(authContext?.auth);
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ firstname: auth.firstname, username: auth.username })
-    );
-    localStorage.setItem("jwt", JSON.stringify(auth.token));
-    localStorage.setItem("refresh", JSON.stringify(auth.refreshToken));
+    storage.setItem("user", {
+      firstname: auth.firstname,
+      username: auth.username,
+    });
+    storage.setItem("jwt", auth.token);
+    storage.setItem("refresh", auth.refreshToken);
   }, [success]);
 
   return (
@@ -193,12 +200,8 @@ const Login = ({ isOpen }: LoginProps) => {
 
             <Typography variant={"inherit"} color={"#fff"}>
               Need an Account?
-              <br />
-              <span className="line">
-                {/*put router link here*/}
-                <a href="#">Sign Up</a>
-              </span>
             </Typography>
+            <Button onClick={() => onSignUpClick()}>Sign Up</Button>
           </Box>
         </Box>
       </Container>

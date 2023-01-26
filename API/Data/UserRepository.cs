@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -25,10 +26,13 @@ namespace API.Data
             return await _context.Users.FindAsync(id);
         }
 
-         public async Task<AppUser> GetUserByUserNameAsync(string username)
+         public async Task<UserDto> GetUserByUserNameAsync(string username)
         {
-            return await _context.Users
-            .SingleOrDefaultAsync(x => x.UserName == username);
+            return await _context.Users.Where(x => x.UserName == username).Select(user => new UserDto {
+                Username = user.UserName,
+                Firstname = user.FirstName,
+                RefreshToken = user.RefreshToken
+            }).SingleOrDefaultAsync();
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()

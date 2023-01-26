@@ -12,6 +12,8 @@ import Login from "../Components/Login/Login";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { IUser } from "../interface/IUser";
 import axios from "axios";
+import Register from "../Components/Register";
+import * as storage from '../Utility/LocalStorage'
 
 type AuthContextType = {
   auth: IUser | any;
@@ -19,8 +21,10 @@ type AuthContextType = {
   loginDialog: boolean;
   isLoggedIn: boolean;
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
-  openDialog: () => void;
-  closeDialog: () => void;
+  openLoginDialog: () => void;
+  closeLoginDialog: () => void;
+  openRegisterDialog: () => void;
+  closeRegisterDialog: () => void;
   setLoggedInUser: () => void;
 };
 
@@ -37,21 +41,16 @@ export function useAuthProvider() {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [auth, setAuth] = useLocalStorage("user", {});
   const [loginDialog, setLoginDialog] = useState(false);
+  const [registerDialog, setRegisterDialog] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
-
   const setLoggedInUser = async () => {
-    let u = localStorage.getItem("user");
-    if (u == undefined) return "No User";
-    let parsedUser = JSON.parse(u);
-    if (parsedUser === "") {
-      return "No User";
-    } else {
+  let parsedUser = await storage.getItem("user");
       try {
         const response = await axios.get(
           `account/users/${parsedUser.username}`
         );
+        console.log(response.data);
         setAuth(response.data);
         setIsLoggedIn(true);
       } catch (err: any) {
@@ -63,13 +62,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           console.log("Unauthorized");
         } else {
           console.log("Login Failed");
+        }
       }
     }
-  }
-  };
+  
 
-  const openDialog = () => setLoginDialog(true);
-  const closeDialog = () => setLoginDialog(false);
+  const openLoginDialog = () => setLoginDialog(true);
+  const closeLoginDialog = () => setLoginDialog(false);
+  const openRegisterDialog = () => setRegisterDialog(true);
+  const closeRegisterDialog = () => setRegisterDialog(false);
 
   useEffect(() => {
     // setLoggedInUser();
@@ -80,16 +81,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         auth,
         setAuth,
-        openDialog,
-        closeDialog,
+        openLoginDialog,
+        closeLoginDialog,
+        openRegisterDialog,
+        closeRegisterDialog,
         loginDialog,
         isLoggedIn,
         setIsLoggedIn,
-        setLoggedInUser
+        setLoggedInUser,
       }}
     >
       {children}
       <Login isOpen={loginDialog} />
+      <Register isOpen={registerDialog} />
     </AuthContext.Provider>
   );
 };

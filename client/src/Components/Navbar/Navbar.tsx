@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -16,14 +16,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import LoginControl from "../Login/LoginControl";
-import Login from "../Login/Login";
 import { useAuthProvider } from "../../Context/AuthProvider";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
-import { Grid, linkClasses, Stack } from "@mui/material";
-
+import { Stack } from "@mui/material";
 
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -31,7 +28,7 @@ export default function Navbar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
   //const authContext = useContext(AuthContext);
-  const { openDialog, closeDialog, isLoggedIn } = useAuthProvider();
+  const { openLoginDialog, openRegisterDialog, isLoggedIn } = useAuthProvider();
   const { openCart, cartQuantity } = useShoppingCart();
   const [scroll, setScroll] = useState(false);
 
@@ -42,13 +39,22 @@ export default function Navbar() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
+  const handleMobileMenuClose = (id: string) => {
+    if (id === "login") {
+      openLoginDialog();
+      setMobileMoreAnchorEl(null);
+    }
+    if (id === "register") {
+      openLoginDialog();
+      setMobileMoreAnchorEl(null);
+    } else {
+      setMobileMoreAnchorEl(null);
+    }
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
+    setMobileMoreAnchorEl(null);
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -70,10 +76,10 @@ export default function Navbar() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -95,7 +101,7 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>
-        <button onClick={openDialog}>Sign In</button>
+        <button onClick={openLoginDialog}>Sign In</button>
       </MenuItem>
       <MenuItem>My account</MenuItem>
     </Menu>
@@ -118,16 +124,24 @@ export default function Navbar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={() => openDialog()}>Sign In</MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <Link to="login">Sign Up</Link>
-      </MenuItem>
+      {isLoggedIn ? (
+        <MenuItem>Logout</MenuItem>
+      ) : (
+        <>
+          <MenuItem onClick={() => handleMobileMenuClose("login")}>
+            Sign In
+          </MenuItem>
+          <MenuItem onClick={() => handleMobileMenuClose("register")}>
+            Sign Up
+          </MenuItem>
+        </>
+      )}
     </Menu>
   );
 
   return (
-    <Box sx={{ flexGrow: 1}}>
-      <AppBar position="fixed" color={`${scroll ? 'primary' : 'transparent'}`}  >
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="fixed" color={`${scroll ? "primary" : "transparent"}`}>
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -236,17 +250,43 @@ export default function Navbar() {
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
-          <Box
-            sx={{
-              display: { xs: "none", md: "flex" },
-              mr: 3,
-              justifyContent: "center",
-            }}
-          >
-            <Button color="inherit" onClick={openDialog}>
+          {isLoggedIn ? (
+            <Button
+            onClick={handleMobileMenuOpen}
+              sx={{
+                display: { xs: "none", md: "flex" },
+                mr: 3,
+                justifyContent: "center",
+                gap: 3,
+              }}
+            >
               <LoginControl />
             </Button>
-          </Box>
+          ) : (
+            <Box
+              sx={{
+                display: { xs: "none", md: "flex" },
+                mr: 3,
+                justifyContent: "center",
+                gap: 3,
+              }}
+            >
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={openLoginDialog}
+              >
+                Login
+              </Button>
+              <Button
+                variant="outlined"
+                color="inherit"
+                onClick={openRegisterDialog}
+              >
+                Sign Up
+              </Button>
+            </Box>
+          )}
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -266,6 +306,11 @@ export default function Navbar() {
     </Box>
   );
 }
+
+const activeNavB = styled(Button)(({theme}) => ({
+  
+}))
+
 
 //#region SEARCH BAR
 const Search = styled("div")(({ theme }) => ({
@@ -314,7 +359,6 @@ const StyledLink: React.FC<
 > = ({ children, to, color = "white" }) => {
   return (
     <Box
-    
       sx={{
         [`>*`]: {
           textDecoration: "none",

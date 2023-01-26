@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.DTOs;
 using API.Entities;
+using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +16,13 @@ namespace API.Controllers
     public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
-        public UsersController(DataContext context)
+        private readonly IUserRepository _userRepository;
+        public UsersController(DataContext context, IUserRepository userRepository)
         {
             _context = context;
-            
+            _userRepository = userRepository;
+
+
         }
 
         [HttpGet] // api/users
@@ -28,18 +33,17 @@ namespace API.Controllers
             return users;
         }
 
-         [HttpGet("{username}", Name = "GetUser"),]
-        public async Task<ActionResult<AppUser>> GetUser(string username)
+        [HttpGet("{username}")]
+        public async Task<ActionResult<UserDto>> GetUser(string username)
         {
-           var rtn = await _context.Users.Where(x => x.UserName == username).SingleOrDefaultAsync();
+            var rtn = await _userRepository.GetUserByUserNameAsync(username);
 
-           return rtn;
+            return rtn;
 
-            
+
         }
-        [Authorize] 
+        [Authorize]
         [HttpGet("{id}")] // api/users/1
-
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
             return await _context.Users.FindAsync(id);

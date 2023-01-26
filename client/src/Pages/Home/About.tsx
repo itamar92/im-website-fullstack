@@ -1,12 +1,13 @@
-import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, CardMedia, Collapse, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { Container } from "@mui/system";
 import React from "react";
-import ProfilePic from "../../assents/Profile_Pic1.jpg";
+import useWindowPosition from "../../hooks/useWindowPosition";
 import ProfilePhotos from "../Home/ProfilePhotos.json";
 
 function About() {
   const [currentIndex, setCurrentIndex] = React.useState(0);
+  const checked = useWindowPosition("about");
+
   let photos = ProfilePhotos;
 
   React.useEffect(() => {
@@ -27,45 +28,50 @@ function About() {
         flexDirection={"column"}
       >
         <Typography variant="h3">About the Site</Typography>
-        <Grid
-          container
-          gap={4}
-          alignItems="center"
-          p={4}
-          justifyContent={"center"}
-        >
-          {/* <Grid item lg={4} className="about__me"></Grid> */}
-          {/* <CardMedia component='img' image={ProfilePic} sx={{width:'40rem',border: '10px solid rgb(36, 5, 119,0.5)'}} className='profile__img'/> */}
-          <Box
-            position="absolute"
-            left="25rem"
-            sx={{
-              width: "27rem",
-              height: "27rem",
-              background:
-                "linear-gradient(135deg,transparent 30%, rgba(36, 5, 119, 0.5) ,rgba(36, 5, 119, 0.5 ), rgba(36, 5, 119, 0.3))",
-            }}
-          />
-            
-          
-          <CardMedia
-            component="img"
-            alt={photos[currentIndex].name}
-            image={photos[currentIndex].url}
-            title={photos[currentIndex].name}
-            sx={{ width: "40rem", height: "27rem" }}
-          />
+        <Collapse in={checked} {...(checked ? { timeout: 1000 } : {})}>
+          <Grid
+            container
+            gap={4}
+            alignItems="center"
+            p={4}
+            justifyContent={"center"}
+          >
+            <Box
+              position="absolute"
+              sx={{
+                left: { xs: "0rem", md: "22rem" },
+                top: { xs: "58rem", md: "70rem" },
+                width: { xs: "0%", md: "27rem" },
+                height: "28rem",
+                background:
+                  "linear-gradient(100deg,transparent 40%, rgba(36, 5, 119, 0.5) ,rgba(36, 5, 119, 0.9 ), rgba(36, 5, 119, 0.7))",
+                borderRadius: "1.5rem",
+              }}
+            />
 
-          <Grid item lg={4} className="about__content">
-            <p>
-              Here you could find Original Royelty music for your videos,
-              commercials,Podcast or youtube videos. By clicking on the Products
-              page you can listen to all kind of diffrent style of music and
-              with a simple click it will be sent to your email account. This
-              site was built by me using .NET ASP and ReactTS.
-            </p>
+            <CardMedia
+              component="img"
+              alt={photos[currentIndex].name}
+              image={photos[currentIndex].url}
+              title={photos[currentIndex].name}
+              sx={{
+                width: { xs: "24rem", md: "40rem" },
+                height: { md: "27rem" },
+                objectFit: "contain",
+              }}
+            />
+
+            <Grid item lg={4} className="about__content">
+              <p>
+                Here you could find Original Royelty music for your videos,
+                commercials,Podcast or youtube videos. By clicking on the
+                Products page you can listen to all kind of diffrent style of
+                music and with a simple click it will be sent to your email
+                account. This site was built by me using .NET ASP and ReactTS.
+              </p>
+            </Grid>
           </Grid>
-        </Grid>
+        </Collapse>
       </Box>
     </section>
   );

@@ -35,7 +35,7 @@
 }
 
 .about__background{
-background: linear-gradient(-90deg, rgb(36, 5, 119), transparent 70%);
+background: linear-gradient(-86deg, rgb(36, 5, 119,0.5), rgb(36, 5, 119), transparent 83%);
     
     
 }

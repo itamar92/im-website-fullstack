@@ -1,19 +1,37 @@
-import { Box, FormControl, Grid, OutlinedInput, Typography } from "@mui/material";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { Box, Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import EmailIcon from "@mui/icons-material/Email";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import React from "react";
 
 function Contact() {
   return (
     <section id="contact">
-      <Container >
-        <Typography variant="h3" justifyContent={'center'} sx={{display:'flex'}}>Contact Me</Typography>
-        <Grid container spacing={2} alignItems="center" pt={4} justifyContent={'center'}>
-          <Grid container direction={"column"} className="contact__options" item lg={4} mr={10} ml={{xs:10}}>
-            <Grid  >
+      <Container id="contact">
+        <Typography
+          variant="h3"
+          justifyContent={"center"}
+          sx={{ display: "flex" }}
+        >
+          Contact Me
+        </Typography>
+        <Grid
+          container
+          spacing={2}
+          alignItems="center"
+          pt={4}
+          justifyContent={"center"}
+        >
+          <Grid
+            container
+            direction={"column"}
+            className="contact__options"
+            item
+            lg={4}
+            mr={10}
+            ml={{ xs: 10 }}
+          >
+            <Grid>
               <Box
                 className="contact__option"
                 sx={{
@@ -21,7 +39,6 @@ function Contact() {
                   alignItems: "center",
                 }}
                 p={4}
-               
               >
                 <EmailIcon className="contact__option-icon" />
                 <h4>Email</h4>
@@ -68,30 +85,31 @@ function Contact() {
 
           <Grid item lg={4} className="about__content">
             <Box>
-            <form className="contact__form" action="">
-          <input
-            type="text"
-            name="name"
-            placeholder="Your Full Name"
-            required
-          />
-          <input type="email" name="email" placeholder="Your Email" required />
-          <textarea
-            name="message"
-            rows={7}
-            placeholder="Your Message"
-            required
-          ></textarea>
-          <button type="submit" className="btn btn-primary">
-            Send Message
-          </button>
-        </form>
+              <form className="contact__form" action="">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Full Name"
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
+                  required
+                />
+                <textarea
+                  name="message"
+                  rows={7}
+                  placeholder="Your Message"
+                  required
+                ></textarea>
+                <button type="submit" className="btn btn-primary">
+                  Send Message
+                </button>
+              </form>
             </Box>
           </Grid>
-
-          {/* <a href="#contact" className="btn btn-primary">
-        Lets Talk
-      </a> */}
         </Grid>
       </Container>
     </section>
@@ -99,7 +117,3 @@ function Contact() {
 }
 
 export default Contact;
-
-{
-  /*  */
-}

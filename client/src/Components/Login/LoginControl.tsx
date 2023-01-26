@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import * as storage from "../../Utility/LocalStorage"
+import {  Stack, Typography } from "@mui/material";
 import { useAuthProvider } from "../../Context/AuthProvider";
-import IconButton from "@mui/material/IconButton";
-import { Box, Stack, Typography } from "@mui/material";
 
 function LoginControl() {
-  const { auth } = useAuthProvider();
-  const {isLoggedIn} = useAuthProvider();
-
+  const {auth} = useAuthProvider();
+//  let firstName =  (storage.getItem("user")) ;
+ let firstName =  auth.firstname;
+     
+    
+  
   //#region Avatar    Icon Color
   function stringToColor(string: string) {
     let hash = 0;
@@ -30,31 +31,26 @@ function LoginControl() {
 
   //#endregion
 
-  let loginName;
-  if (isLoggedIn) {
-    loginName = (
+  
+    const loginName = (
+      
       <Stack direction={'row'} alignItems='center' gap={2} sx={{mr:{xs:0, md:1}}}>
         <Avatar
           sx={{
-            bgcolor: stringToColor(auth.firstname),
+            bgcolor: 'secondary.main',
             width: 30,
             height: 30,
             fontSize: 20,
+            color: 'primary.main'
           }}
-          children={auth.firstname[0]}
+          children={firstName[0]}
         />
-        <Typography variant="inherit" color={'#fff'} >
-          {auth.firstname}
+        <Typography variant="inherit" color={'#fff'} fontSize={23} >
+          {firstName}
         </Typography>
       </Stack>
     );
-  } else {
-    loginName = (
-      <Box sx={{alignSelf:'center', color:'#fff', gap:2}}>
-        <AccountCircleIcon /> Sign In
-      </Box>
-    );
-  }
+ 
 
   return <div>{loginName}</div>;
 }
