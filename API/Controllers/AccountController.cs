@@ -45,13 +45,17 @@ namespace API.Controllers
                 //       PasswordSalt = hmac.Key
             };
             user.UserName = registerDto.Username.ToLower();
+
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Member");
+            if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user),
+                Token = await _tokenService.CreateToken(user),
                 RefreshToken = _tokenService.CreateRefreshToken()
             };
         }
@@ -65,7 +69,7 @@ namespace API.Controllers
             .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
             if (user == null) return Unauthorized("Invalid username or password");
 
-             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password,false);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
             //check password
             //  using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -85,7 +89,7 @@ namespace API.Controllers
 
             if (!result.Succeeded) return Unauthorized("invalid password");
 
-            var accessToken = _tokenService.CreateToken(user);
+            var accessToken = await _tokenService.CreateToken(user);
             var refreshToken = _tokenService.CreateRefreshToken();
 
             // user.RefreshToken = refreshToken;
