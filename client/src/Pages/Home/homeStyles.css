@@ -1,7 +1,7 @@
 .header {
-    background: radial-gradient( #240577 30%,#5b1179 10%,#3af2e3 10%,#211e26 20%, transparent 100%);
+    background: linear-gradient(-86deg, rgb(36, 5, 119,0.5), rgb(36, 5, 119), transparent 83%);
     /* height: 85vh;    */
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .header__hero{
@@ -25,10 +25,10 @@
    
     
 }
-.header h1,h2,h3,h4,h5 {
+/* .header h1,h2,h3,h4,h5 {
     border: 0.5rem;
    
-}
+} */
 
 .header__title{
     width: 20rem;
@@ -119,13 +119,13 @@ background: linear-gradient(-86deg, rgb(36, 5, 119,0.5), rgb(36, 5, 119), transp
   
     
 
-    .header__container{
+    /* .header__container{
         height:fit-content;
         padding: 1rem;
         padding-top: 2rem;
         padding-bottom: 13rem;
 
-     }
+     } */
 
      .logo {
          display: flex;

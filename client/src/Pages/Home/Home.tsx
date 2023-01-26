@@ -6,14 +6,14 @@ import Header from "./Header";
 
 function Home() {
   return (
-    <div>
+    <div >
       <Header />
       <Box sx={{ mt: 10 }}>
         <About />
       </Box>
       <Box sx={{ mt: 20 }} />
       <Contact />
-      <Box sx={{ mb: 20 }} />
+      <Box sx={{ pb: 20 }} />
     </div>
   );
 }

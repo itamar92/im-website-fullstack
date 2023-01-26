@@ -1,13 +1,9 @@
-import * as React from "react";
-import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { BsLinkedin } from "react-icons/bs";
 import { FaGithub } from "react-icons/fa";
 import { IoLogoFacebook } from "react-icons/io";
 import { GrSoundcloud } from "react-icons/gr";
-import Container from "@mui/material/Container";
-import Link from "@mui/material/Link";
 import { Grid, IconButton } from "@mui/material";
 
 function Copyright() {
@@ -33,7 +29,7 @@ export default function StickyFooter() {
         backgroundColor: "#1a237e",
       }}
     >
-      <Box component="footer">
+      <Box component="footer" sx={{mb:{xs:12, md:0}}}>
         <Grid
           container
           item

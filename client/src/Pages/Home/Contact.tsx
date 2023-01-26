@@ -43,7 +43,7 @@ function Contact() {
                 <EmailIcon className="contact__option-icon" />
                 <h4>Email</h4>
                 <h5>itamar92@gmail.com</h5>
-                <a href="mailto:itamar92@gmail.com" target="_blank">
+                <a href="mailto:itamar92@gmail.com" target="blank">
                   {" "}
                   Send a message
                 </a>
@@ -59,7 +59,7 @@ function Contact() {
               <FacebookIcon className="contact__option-icon" />
               <h4>Messanger</h4>
               <h5>Itamar Miron</h5>
-              <a href="http://m.me/itamar.miron" target="_blank">
+              <a href="http://m.me/itamar.miron" target="blank">
                 {" "}
                 Send a message
               </a>
@@ -75,7 +75,7 @@ function Contact() {
               <h5>+972-526837081</h5>
               <a
                 href="http://api.whatsapp.com/send?phone+9726837081"
-                target="_blank"
+                target="blank"
               >
                 {" "}
                 Send a message

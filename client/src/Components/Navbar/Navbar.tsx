@@ -127,14 +127,14 @@ export default function Navbar() {
       {isLoggedIn ? (
         <MenuItem>Logout</MenuItem>
       ) : (
-        <>
+        <div>
           <MenuItem onClick={() => handleMobileMenuClose("login")}>
             Sign In
           </MenuItem>
           <MenuItem onClick={() => handleMobileMenuClose("register")}>
             Sign Up
           </MenuItem>
-        </>
+        </div>
       )}
     </Menu>
   );
@@ -251,7 +251,7 @@ export default function Navbar() {
             </Badge>
           </IconButton>
           {isLoggedIn ? (
-            <Button
+            <IconButton
             onClick={handleMobileMenuOpen}
               sx={{
                 display: { xs: "none", md: "flex" },
@@ -261,7 +261,7 @@ export default function Navbar() {
               }}
             >
               <LoginControl />
-            </Button>
+            </IconButton>
           ) : (
             <Box
               sx={{

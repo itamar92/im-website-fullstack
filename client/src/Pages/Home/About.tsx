@@ -1,4 +1,4 @@
-import { Box, CardMedia, Collapse, Typography } from "@mui/material";
+import { Box, Card, CardMedia, Collapse, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import React from "react";
 import useWindowPosition from "../../hooks/useWindowPosition";
@@ -20,7 +20,7 @@ function About() {
   return (
     <section id="about">
       <Box
-        className="about__background"
+        // className="about__background"
         display={"flex"}
         justifyContent={"center"}
         alignItems={"center"}
@@ -36,7 +36,8 @@ function About() {
             p={4}
             justifyContent={"center"}
           >
-            <Box
+            <Card sx={{width:{xs:"20rem",md:"38rem"},height:{xs:"13rem",md:"24rem"},borderRadius:3 }}>
+            {/* <Box
               position="absolute"
               sx={{
                 left: { xs: "0rem", md: "22rem" },
@@ -47,21 +48,22 @@ function About() {
                   "linear-gradient(100deg,transparent 40%, rgba(36, 5, 119, 0.5) ,rgba(36, 5, 119, 0.9 ), rgba(36, 5, 119, 0.7))",
                 borderRadius: "1.5rem",
               }}
-            />
-
+            /> */}
+            
             <CardMedia
               component="img"
               alt={photos[currentIndex].name}
               image={photos[currentIndex].url}
               title={photos[currentIndex].name}
               sx={{
-                width: { xs: "24rem", md: "40rem" },
-                height: { md: "27rem" },
-                objectFit: "contain",
+                // width: { xs: "27rem", md: "40rem" },
+                // height: { md: "27rem" },
+                objectFit: "cover",
               }}
             />
+            </Card>
 
-            <Grid item lg={4} className="about__content">
+            <Grid item lg={4} className="about__content" sx={{zIndex:1}}>
               <p>
                 Here you could find Original Royelty music for your videos,
                 commercials,Podcast or youtube videos. By clicking on the
