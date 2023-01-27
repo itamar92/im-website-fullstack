@@ -28,7 +28,7 @@ type LoginProps = {
 
 const Login = ({ isOpen }: LoginProps) => {
   // const authContext = useContext(AuthContext);
-  const { auth, setAuth, closeLoginDialog, openRegisterDialog, setIsLoggedIn } =
+  const { auth, setAuth, closeLoginDialog, openRegisterDialog, setIsLoggedIn,setToken,token } =
     useAuthProvider();
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLParagraphElement>(null);
@@ -82,8 +82,10 @@ const Login = ({ isOpen }: LoginProps) => {
           headers: { "Access-Control-Allow-Origin": "*" },
         }
       );
+      const tokenRes  = response.data.token;
       console.log("login response:" + response);
       setAuth(response.data);
+      setToken(tokenRes as string);
       setUserName("");
       setPassword("");
       setSuccess(true);
@@ -92,14 +94,14 @@ const Login = ({ isOpen }: LoginProps) => {
 
       axios.defaults.headers.common[
         "Authorization"
-      ] = `Brearer ${response.data.token}`;
+      ] = `Brearer ${tokenRes}`;
     } catch (err: any) {
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else if (err.response?.status === 400) {
         setErrMsg("Missing Username or Password");
       } else if (err.response?.status === 401) {
-        setErrMsg("Unauthorized");
+        setErrMsg("Invalid Username or Password");
       } else if (err.response?.status === 500) {
         setErrMsg("Unauthorized");
       } else {
@@ -117,8 +119,7 @@ const Login = ({ isOpen }: LoginProps) => {
       firstname: auth.firstname,
       username: auth.username,
     });
-    storage.setItem("jwt", auth.token);
-    storage.setItem("refresh", auth.refreshToken);
+    storage.setItem("jwt",token);
   }, [success]);
 
   return (

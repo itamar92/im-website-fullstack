@@ -33,20 +33,20 @@ namespace API.Controllers
             return users;
         }
 
-        [HttpGet("{username}")]
-        public async Task<ActionResult<AppUser>> GetUser(string username)
+        [HttpGet("{username}", Name = "GetUser")]
+        public async Task<ActionResult<UserDto>> GetUser(string username)
         {
-            var rtn = await _userRepository.GetUserByUserNameAsync(username);
+            var rtn = await _userRepository.GetUserDtoByUserNameAsync(username);
 
             return rtn;
 
 
         }
-        [Authorize]
-        [HttpGet("{id}")] // api/users/1
-        public async Task<ActionResult<AppUser>> GetUser(int id)
-        {
-            return await _context.Users.FindAsync(id);
-        }
+        // [Authorize]
+        // [HttpGet("{id}")] // api/users/1
+        // public async Task<ActionResult<AppUser>> GetUser(int id)
+        // {
+        //     return await _context.Users.FindAsync(id);
+        // }
     }
 }

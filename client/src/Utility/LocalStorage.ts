@@ -13,7 +13,7 @@ const getItem = async (key: string) => {
     const item = localStorage.getItem(key);
     return item ? JSON.parse(item) : undefined;
   } catch (err) {
-    return err;
+    return undefined;
   }
 };
 

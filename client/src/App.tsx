@@ -14,7 +14,6 @@ function App() {
 const {setLoggedInUser} = useAuthProvider();
 
   useEffect(() => {
-    // () =>  setLoggedInUser();
   }, []);
 
   return (

@@ -24,9 +24,21 @@ namespace API.Data
             return await _context.Users.FindAsync(id);
         }
 
-         public async Task<AppUser> GetUserByUserNameAsync(string username)
+        public async Task<AppUser> GetUserByUserNameAsync(string username)
         {
             return await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
+
+
+        }
+        public async Task<UserDto> GetUserDtoByUserNameAsync(string username)
+        {
+
+            var userResponse = await _context.Users.SingleOrDefaultAsync(x => x.UserName == username);
+            return new UserDto
+            {
+                Firstname = userResponse.FirstName,
+                Username = userResponse.UserName
+            };
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()

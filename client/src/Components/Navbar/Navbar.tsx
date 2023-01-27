@@ -28,26 +28,29 @@ export default function Navbar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
   //const authContext = useContext(AuthContext);
-  const { openLoginDialog, openRegisterDialog, isLoggedIn } = useAuthProvider();
+  const { openLoginDialog, openRegisterDialog, isLoggedIn, setLoggedOutUser } = useAuthProvider();
   const { openCart, cartQuantity } = useShoppingCart();
   const [scroll, setScroll] = useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  
 
   const handleMobileMenuClose = (id: string) => {
     if (id === "login") {
       openLoginDialog();
       setMobileMoreAnchorEl(null);
     }
-    if (id === "register") {
+    else if (id === "register") {
       openLoginDialog();
       setMobileMoreAnchorEl(null);
-    } else {
+    }
+    else if ( id === "logout"){
+      setLoggedOutUser();
+      setMobileMoreAnchorEl(null);
+    }
+     else {
       setMobileMoreAnchorEl(null);
     }
   };
@@ -125,7 +128,7 @@ export default function Navbar() {
       onClose={handleMobileMenuClose}
     >
       {isLoggedIn ? (
-        <MenuItem>Logout</MenuItem>
+        <MenuItem onClick={() => handleMobileMenuClose("logout")}>Logout</MenuItem>
       ) : (
         <div>
           <MenuItem onClick={() => handleMobileMenuClose("login")}>
