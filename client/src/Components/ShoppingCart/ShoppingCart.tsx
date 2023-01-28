@@ -41,6 +41,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
           justifyContent={"center"}
           variant="h3"
           color={"white"}
+          sx={{"& .MuiTypography-root":{backgroundColor: "#0b0f3e" }}}
         >
           Cart
         </Typography>

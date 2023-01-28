@@ -4,6 +4,7 @@ import Contact from "../Pages/Home/Contact";
 import Products from "../Pages/Products/Products";
 import Home from "../Pages/Home/Home";
 import NotFound from "../Pages/NotFound";
+import Checkout from "../Pages/Checkout/Checkout";
 
 function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ function AppRoutes() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
     </div>

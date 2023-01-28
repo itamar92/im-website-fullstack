@@ -5,6 +5,7 @@ import { useAuthProvider } from "../../Context/AuthProvider";
 import axios from "axios";
 import * as storage from "../../Utility/LocalStorage";
 import "../../interceptors/axios";
+import jwt from 'jwt-decode';
 import { IUser } from "../../interface/IUser";
 import Container from "@mui/system/Container";
 import FormControl from "@mui/material/FormControl";
@@ -49,8 +50,7 @@ const Login = ({ isOpen }: LoginProps) => {
 
   const handleClickAway = () => {
     closeLoginDialog();
-    //setOpen(false);
-    //navigate(from, { replace: true });
+   
   };
 
   const onSignUpClick = () => {
@@ -83,7 +83,10 @@ const Login = ({ isOpen }: LoginProps) => {
         }
       );
       const tokenRes  = response.data.token;
+      const decoded:IUser = jwt(tokenRes as string);
+      console.log("decoded:" + decoded.role);
       console.log("login response:" + response);
+      console.log(token as string);
       setAuth(response.data);
       setToken(tokenRes as string);
       setUserName("");

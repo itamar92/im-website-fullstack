@@ -29,7 +29,7 @@ function Header() {
         <CardMedia
           component="img"
           image={LOGO2}
-          sx={{ mb: { md: -18 }, width: { xs: "100%", md: "75%" } }}
+          sx={{ mb: { md: -18 }, width: { xs: "100%", md: "60%",lg:"52%" } }}
         />
         <Collapse
           in={checked}
