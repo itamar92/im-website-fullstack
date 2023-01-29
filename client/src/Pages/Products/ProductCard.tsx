@@ -25,7 +25,6 @@ import {
   VolumeOffRounded,
   VolumeUpRounded,
 } from "@mui/icons-material";
-import {Wave} from "@foobar404/wave";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import './musicStyles.css'
 
@@ -40,7 +39,6 @@ const ProductCard: React.FC<Props> = ({ product }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.5);
-  const [isMuted, setMuted] = useState(false);
   const [isVolumeOpen, setIsVolumeOpen] = useState(false);
   const [volumeSliderHeight, setVolumeHeight] = useState(0);
   const { increaseCartQuantity, decreaseCartQuantity } = useShoppingCart();
@@ -204,7 +202,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
             </Grow>
             <Tooltip title="volume">
               <IconButton onClick={handleVolumeOpen}>
-                {volume == 0 ? (
+                {volume === 0 ? (
                   <VolumeOffRounded htmlColor={lightIconColor} />
                 ) : (
                   <VolumeUpRounded htmlColor={lightIconColor} />

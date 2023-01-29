@@ -1,16 +1,11 @@
 import {
   Box,
   Grid,
-  List,
   ListItem,
   ListItemText,
-  Stack,
-  Typography,
-  Button,
   IconButton
 } from "@mui/material";
 import CancelPresentationOutlinedIcon from '@mui/icons-material/CancelPresentationOutlined';
-import React from "react";
 import { useMusicProvider } from "../../Context/ProductsContext";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import { IMusic } from "../../interface/IMusic";

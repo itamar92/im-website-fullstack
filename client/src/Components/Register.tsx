@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useAuthProvider } from "../Context/AuthProvider";
 //import axios from "../../interceptors/axios";
 import axios from "axios";
-import * as storage from '../Utility/LocalStorage'
+import * as storage from "../Utility/LocalStorage";
 import "../interceptors/axios";
 import { IUser } from "../interface/IUser";
 import Container from "@mui/system/Container";
@@ -29,13 +29,8 @@ type RegisterProps = {
 
 const Register = ({ isOpen }: RegisterProps) => {
   // const authContext = useContext(AuthContext);
-  const {
-    auth,
-    setAuth,
-    closeRegisterDialog,
-    openLoginDialog,
-    setIsLoggedIn,
-  } = useAuthProvider();
+  const { auth, setAuth, closeRegisterDialog, openLoginDialog, setIsLoggedIn } =
+    useAuthProvider();
   const userRef = useRef<HTMLInputElement>();
   const errRef = useRef<HTMLParagraphElement>(null);
 
@@ -60,13 +55,13 @@ const Register = ({ isOpen }: RegisterProps) => {
   };
 
   const handlePasswMatch = () => {
-    if (password == passwordConfirm) return setPasswordMatch(true);
+    if (password === passwordConfirm) return setPasswordMatch(true);
   };
 
   const onLoginClick = () => {
     closeRegisterDialog();
     openLoginDialog();
-  }
+  };
 
   useEffect(() => {
     if (userRef.current) {
@@ -133,10 +128,12 @@ const Register = ({ isOpen }: RegisterProps) => {
 
   useEffect(() => {
     //console.log(authContext?.auth);
-    storage.setItem("user",{ firstname: auth.firstname, username: auth.username })
-    storage.setItem("jwt",auth.token);
-    storage.setItem('refresh',auth.refreshToken)
-    
+    storage.setItem("user", {
+      firstname: auth.firstname,
+      username: auth.username,
+    });
+    storage.setItem("jwt", auth.token);
+    storage.setItem("refresh", auth.refreshToken);
   }, [success]);
 
   return (
@@ -280,7 +277,7 @@ const Register = ({ isOpen }: RegisterProps) => {
             <Typography variant={"inherit"} color={"#fff"}>
               Already have an Account?
             </Typography>
-            <Button onClick={()=> onLoginClick()}>Login</Button>
+            <Button onClick={() => onLoginClick()}>Login</Button>
           </Box>
         </Box>
       </Container>

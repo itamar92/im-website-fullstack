@@ -1,12 +1,10 @@
-import { Box, Paper, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 // import axios from "../../interceptors/axios";
 import axios from "axios";
 import '../../interceptors/axios';
 import { useMusicProvider } from "../../Context/ProductsContext";
-import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import { IMusic } from "../../interface/IMusic";
 import ProductCard from "./ProductCard";
 

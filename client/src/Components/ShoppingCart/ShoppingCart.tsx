@@ -1,15 +1,4 @@
-import {
-  Box,
-  Container,
-  Drawer,
-  drawerClasses,
-  Grid,
-  List,
-  ListItem,
-  paperClasses,
-  Typography,
-} from "@mui/material";
-import React from "react";
+import { Box, Drawer, Grid, Typography } from "@mui/material";
 import { useMusicProvider } from "../../Context/ProductsContext";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import { IMusic } from "../../interface/IMusic";
@@ -23,9 +12,9 @@ type ShoppingCartProps = {
 export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   const { closeCart, cartItems } = useShoppingCart();
   const { music } = useMusicProvider();
-  let price:number = 3;
+  let price: number = 3;
   const totalCart = cartItems.reduce((total, cartItem) => {
-    let item = music.find((i: IMusic) => i.id == cartItem.id);
+    let item = music.find((i: IMusic) => i.id === cartItem.id);
     return total + (price || 0) * cartItem.quantity;
   }, 0);
   return (
@@ -35,13 +24,13 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
       onClose={closeCart}
       sx={{ "& .MuiPaper-root": { backgroundColor: "#000451 " } }}
     >
-      <Box  sx={{width:{xs:"20rem",md:"26rem"}}}>
+      <Box sx={{ width: { xs: "20rem", md: "26rem" } }}>
         <Typography
           display={"flex"}
           justifyContent={"center"}
           variant="h3"
           color={"white"}
-          sx={{"& .MuiTypography-root":{backgroundColor: "#0b0f3e" }}}
+          sx={{ "& .MuiTypography-root": { backgroundColor: "#0b0f3e" } }}
         >
           Cart
         </Typography>
@@ -50,7 +39,13 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
             <CartItem key={item.id} {...item} />
           ))}
 
-          <Typography align="right" color={'white'} sx={{ml:{xs:26 ,md:38}}}>Total {formatCurrency(totalCart)}</Typography>
+          <Typography
+            align="right"
+            color={"white"}
+            sx={{ ml: { xs: 26, md: 38 } }}
+          >
+            Total {formatCurrency(totalCart)}
+          </Typography>
         </Grid>
       </Box>
     </Drawer>
