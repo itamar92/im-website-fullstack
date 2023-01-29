@@ -1,4 +1,5 @@
-import { Box, Drawer, Grid, Typography } from "@mui/material";
+import { Box, Button, Drawer, Grid, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { useMusicProvider } from "../../Context/ProductsContext";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import { IMusic } from "../../interface/IMusic";
@@ -17,6 +18,10 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
     let item = music.find((i: IMusic) => i.id === cartItem.id);
     return total + (price || 0) * cartItem.quantity;
   }, 0);
+
+  const handleCheckOut = () => {
+    closeCart();
+  }
   return (
     <Drawer
       anchor="right"
@@ -47,7 +52,36 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
             Total {formatCurrency(totalCart)}
           </Typography>
         </Grid>
+        {cartItems.length >= 1 ? (
+          <Button variant="contained" sx={{ ml: { xs: 25, md: 37 }, mt: 3 }} onClick={handleCheckOut}>
+            <StyledLink to="/checkout">Checkout</StyledLink>
+          </Button>
+        ) : (
+          ""
+        )}
       </Box>
     </Drawer>
   );
 }
+//
+
+const StyledLink: React.FC<
+  React.PropsWithChildren<{ to: string; color?: string }>
+> = ({ children, to, color = "white" }) => {
+  return (
+    <Box
+      sx={{
+        [`>*`]: {
+          textDecoration: "none",
+          color,
+          ":hover": { color: "#2dd7d7" },
+          "&:active": {
+            color: "light-blue",
+          },
+        },
+      }}
+    >
+      <Link to={to}>{children}</Link>
+    </Box>
+  );
+};

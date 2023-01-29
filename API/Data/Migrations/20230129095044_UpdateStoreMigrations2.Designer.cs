@@ -3,14 +3,16 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230129095044_UpdateStoreMigrations2")]
+    partial class UpdateStoreMigrations2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,6 +24,9 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("artist")
                         .HasColumnType("TEXT");
 
@@ -31,19 +36,16 @@ namespace API.Data.Migrations
                     b.Property<string>("filename")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("price")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("public_id")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("quantity")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("url")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
 
                     b.ToTable("Music");
                 });
@@ -215,9 +217,6 @@ namespace API.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ProductId1")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
@@ -227,8 +226,6 @@ namespace API.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("ProductId1");
-
                     b.ToTable("OrderDetails");
                 });
 
@@ -236,9 +233,6 @@ namespace API.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("MusicId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -255,8 +249,6 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MusicId");
-
                     b.ToTable("Products");
                 });
 
@@ -269,17 +261,12 @@ namespace API.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ProductId1")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("TagId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("ProductId1");
 
                     b.HasIndex("TagId");
 
@@ -384,6 +371,17 @@ namespace API.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("API.Entities.AppMusic", b =>
+                {
+                    b.HasOne("API.Entities.Product", "Product")
+                        .WithOne("Music")
+                        .HasForeignKey("API.Entities.AppMusic", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("API.Entities.AppUserRole", b =>
                 {
                     b.HasOne("API.Entities.AppRole", "Role")
@@ -431,43 +429,22 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Entities.AppMusic", "MusicFile")
+                    b.HasOne("API.Entities.Product", "Product")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Entities.Product", null)
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("ProductId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MusicFile");
-
                     b.Navigation("Order");
-                });
 
-            modelBuilder.Entity("API.Entities.Product", b =>
-                {
-                    b.HasOne("API.Entities.AppMusic", "Music")
-                        .WithMany()
-                        .HasForeignKey("MusicId");
-
-                    b.Navigation("Music");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("API.Entities.ProductTag", b =>
                 {
-                    b.HasOne("API.Entities.AppMusic", "MusicFile")
+                    b.HasOne("API.Entities.Product", "Product")
                         .WithMany("Tags")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Entities.Product", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("ProductId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -477,7 +454,7 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MusicFile");
+                    b.Navigation("Product");
 
                     b.Navigation("Tag");
                 });
@@ -518,13 +495,6 @@ namespace API.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("API.Entities.AppMusic", b =>
-                {
-                    b.Navigation("OrderDetails");
-
-                    b.Navigation("Tags");
-                });
-
             modelBuilder.Entity("API.Entities.AppRole", b =>
                 {
                     b.Navigation("UserRoles");
@@ -545,6 +515,8 @@ namespace API.Data.Migrations
             modelBuilder.Entity("API.Entities.Product", b =>
                 {
                     b.Navigation("Merchandise");
+
+                    b.Navigation("Music");
 
                     b.Navigation("OrderDetails");
 

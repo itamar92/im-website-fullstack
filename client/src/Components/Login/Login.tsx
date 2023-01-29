@@ -20,6 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useLocation, useNavigate } from "react-router-dom";
 
 //#endregion
 type LoginProps = {
@@ -39,6 +40,9 @@ const Login = ({ isOpen }: LoginProps) => {
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  // const from = location.state?.from?.pathname || "/";
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -84,14 +88,13 @@ const Login = ({ isOpen }: LoginProps) => {
       );
       const tokenRes  = response.data.token;
       const decoded:IUser = jwt(tokenRes as string);
-      console.log("decoded:" + decoded.role);
-      console.log("login response:" + response);
-      console.log(token as string);
-      setAuth(response.data);
+     
+      setAuth({username:response.data.username, firstname:response.data.firstname, token:tokenRes,role:decoded.role});
       setToken(tokenRes as string);
       setUserName("");
       setPassword("");
       setSuccess(true);
+      // navigate(from, {replace:true});
       closeLoginDialog();
       setIsLoggedIn(true);
 
@@ -117,7 +120,6 @@ const Login = ({ isOpen }: LoginProps) => {
   };
 
   useEffect(() => {
-    //console.log(authContext?.auth);
     storage.setItem("user", {
       firstname: auth.firstname,
       username: auth.username,

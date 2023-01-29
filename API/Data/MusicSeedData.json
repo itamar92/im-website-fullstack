@@ -17,7 +17,7 @@
     "artist": "Itamar Miron",
     "description": "Fun funky music",
     "tag": "funky",
-    "quantity": 0,
+    "quantity": 1,
     "price": 3
   },
   {
@@ -38,7 +38,7 @@
     "artist": "Itamar Miron",
     "description": "Fun corporate music",
     "tag": "corporaite",
-    "quantity": 0,
+    "quantity": 1,
     "price": 3
   },
   {
@@ -59,7 +59,7 @@
     "artist": "Itamar Miron",
     "description": "Mysterious Cinematic music",
     "tag": "cinematic",
-    "quantity": 0,
+    "quantity": 1,
     "price": 3
   },
   {
@@ -80,7 +80,7 @@
     "artist": "Itamar Miron",
     "description": "Short Music for powerful Trailer",
     "tag": "Rock",
-    "quantity": 0,
+    "quantity": 1,
     "price": 3
   },
   {
@@ -101,7 +101,7 @@
     "artist": "Itamar Miron",
     "description": "Future Cinematic Trailer",
     "tag": "cinematic",
-    "quantity": 0,
+    "quantity": 1,
     "price": 3
   }
 ]

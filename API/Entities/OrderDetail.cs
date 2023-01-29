@@ -14,6 +14,6 @@ namespace API.Entities
     public int Quantity { get; set; }
 
     public Order Order { get; set; }
-    public Product Product { get; set; }
+    public AppMusic MusicFile { get; set; }
     }
 }
