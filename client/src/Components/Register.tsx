@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useAuthProvider } from "../Context/AuthProvider";
 //import axios from "../../interceptors/axios";
 import axios from "axios";
+import jwt from "jwt-decode"
 import * as storage from "../Utility/LocalStorage";
 import "../interceptors/axios";
 import { IUser } from "../interface/IUser";
@@ -29,7 +30,7 @@ type RegisterProps = {
 
 const Register = ({ isOpen }: RegisterProps) => {
   // const authContext = useContext(AuthContext);
-  const { auth, setAuth, closeRegisterDialog, openLoginDialog, setIsLoggedIn } =
+  const { auth, setAuth, closeRegisterDialog, openLoginDialog, setIsLoggedIn, setRole,setToken,role,token } =
     useAuthProvider();
   const userRef = useRef<HTMLInputElement>();
   const errRef = useRef<HTMLParagraphElement>(null);
@@ -97,17 +98,23 @@ const Register = ({ isOpen }: RegisterProps) => {
           headers: { "Access-Control-Allow-Origin": "*" },
         }
       );
-      console.log("register response:" + response.data);
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Brearer ${response.data.token}`;
+
+      const tokenRes  = response.data.token;
+      const decoded:IUser = jwt(tokenRes as string);
+
       setAuth(response.data);
+      setToken(tokenRes as string);
+      setRole(decoded.role);
       setUserName("");
       setPassword("");
       setSuccess(true);
       closeRegisterDialog();
       setIsLoggedIn(true);
 
-      // axios.defaults.headers.common[
-      //   "Authorization"
-      // ] = `Brearer ${response.data.token}`;
+     
     } catch (err: any) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -127,13 +134,12 @@ const Register = ({ isOpen }: RegisterProps) => {
   };
 
   useEffect(() => {
-    //console.log(authContext?.auth);
     storage.setItem("user", {
       firstname: auth.firstname,
       username: auth.username,
     });
-    storage.setItem("jwt", auth.token);
-    storage.setItem("refresh", auth.refreshToken);
+    storage.setItem("jwt",token);
+    storage.setItem("role", role);
   }, [success]);
 
   return (

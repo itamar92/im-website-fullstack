@@ -9,6 +9,7 @@ import RequiredAuth from "./RequiredAuth";
 import Login from "./Login/Login";
 import { useAuthProvider } from "../Context/AuthProvider";
 import Layout from "./Layout";
+import Unauthorized from "../Pages/Unauthorized";
 
 function AppRoutes() {
   const { isLoggedIn } = useAuthProvider();
@@ -22,10 +23,12 @@ function AppRoutes() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/products" element={<Products />} />
           <Route path="/login" element={<Login isOpen={!isLoggedIn} />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/*" element={<NotFound />} />
           {/* Protected Routes  */}
-          <Route element={<RequiredAuth />}>
-            <Route path="/checkout" element={<Checkout />} />
+          <Route element={<RequiredAuth allowedRoles={["Member","Moderator"]} />}>
+          <Route path="/checkout" element={<Checkout />} />
+         
           </Route>
         </Route>
       </Routes>

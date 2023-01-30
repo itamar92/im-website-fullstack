@@ -8,6 +8,7 @@ import {
   SetStateAction,
 } from "react";
 import "../interceptors/axios";
+import jwt from "jwt-decode";
 import Login from "../Components/Login/Login";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { IUser } from "../interface/IUser";
@@ -20,6 +21,8 @@ type AuthContextType = {
   setAuth: (auth: IUser) => void;
   token: string;
   setToken: Dispatch<SetStateAction<string>>;
+  role: string[] | string;
+  setRole: Dispatch<SetStateAction<string[]>>;
   loginDialog: boolean;
   isLoggedIn: boolean;
   setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
@@ -42,8 +45,9 @@ export function useAuthProvider() {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [auth, setAuth] = useLocalStorage('user',{});
-  const [token, setToken] = useLocalStorage('jwt',"");
+  const [auth, setAuth] = useLocalStorage("user", {});
+  const [token, setToken] = useLocalStorage("jwt", "");
+  const [role, setRole] = useLocalStorage("role", [""]);
   const [loginDialog, setLoginDialog] = useState(false);
   const [registerDialog, setRegisterDialog] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -53,17 +57,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const parsedToken = await storage.getItem("jwt");
     if (parsedToken !== "") {
       try {
-        const response = await axios.get(
-          `users/${parsedUser.username}`,
-          {
-            headers: {
-              Authorization: `Bearer ${parsedToken}`,
-            },
-          }
-        );
+        const response = await axios.get(`users/${parsedUser.username}`, {
+          headers: {
+            Authorization: `Bearer ${parsedToken}`,
+          },
+        });
         setAuth(response.data);
-        
         setIsLoggedIn(true);
+        console.log("is Authorize");
       } catch (err: any) {
         if (!err?.response) {
           console.log("No Server Response");
@@ -84,7 +85,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoggedIn(false);
     setAuth({});
     setToken("");
-  }
+    setRole([""]);
+  };
 
   const openLoginDialog = () => setLoginDialog(true);
   const closeLoginDialog = () => setLoginDialog(false);
@@ -110,7 +112,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isLoggedIn,
         setIsLoggedIn,
         setLoggedInUser,
-        setLoggedOutUser
+        setLoggedOutUser,
+        role,
+        setRole
       }}
     >
       {children}

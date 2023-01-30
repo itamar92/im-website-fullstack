@@ -5,7 +5,7 @@ import { useAuthProvider } from "../../Context/AuthProvider";
 import axios from "axios";
 import * as storage from "../../Utility/LocalStorage";
 import "../../interceptors/axios";
-import jwt from 'jwt-decode';
+import jwt from "jwt-decode";
 import { IUser } from "../../interface/IUser";
 import Container from "@mui/system/Container";
 import FormControl from "@mui/material/FormControl";
@@ -30,8 +30,17 @@ type LoginProps = {
 
 const Login = ({ isOpen }: LoginProps) => {
   // const authContext = useContext(AuthContext);
-  const { auth, setAuth, closeLoginDialog, openRegisterDialog, setIsLoggedIn,setToken,token } =
-    useAuthProvider();
+  const {
+    auth,
+    setAuth,
+    closeLoginDialog,
+    openRegisterDialog,
+    setIsLoggedIn,
+    setToken,
+    token,
+    role,
+    setRole,
+  } = useAuthProvider();
   const userRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLParagraphElement>(null);
 
@@ -40,9 +49,9 @@ const Login = ({ isOpen }: LoginProps) => {
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -54,7 +63,6 @@ const Login = ({ isOpen }: LoginProps) => {
 
   const handleClickAway = () => {
     closeLoginDialog();
-   
   };
 
   const onSignUpClick = () => {
@@ -86,21 +94,24 @@ const Login = ({ isOpen }: LoginProps) => {
           headers: { "Access-Control-Allow-Origin": "*" },
         }
       );
-      const tokenRes  = response.data.token;
-      const decoded:IUser = jwt(tokenRes as string);
-     
-      setAuth({username:response.data.username, firstname:response.data.firstname, token:tokenRes,role:decoded.role});
+      axios.defaults.headers.common["Authorization"] = `Brearer ${response.data.token}`;
+      const tokenRes = response.data.token;
+      const decoded: IUser = jwt(tokenRes as string);
+
+      setAuth({
+        username: response.data.username,
+        firstname: response.data.firstname,
+        token: tokenRes,
+        role: decoded.role,
+      });
       setToken(tokenRes as string);
+      setRole(decoded.role);
       setUserName("");
       setPassword("");
       setSuccess(true);
-      // navigate(from, {replace:true});
+      navigate(from, { replace: true });
       closeLoginDialog();
       setIsLoggedIn(true);
-
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Brearer ${tokenRes}`;
     } catch (err: any) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -124,7 +135,8 @@ const Login = ({ isOpen }: LoginProps) => {
       firstname: auth.firstname,
       username: auth.username,
     });
-    storage.setItem("jwt",token);
+    storage.setItem("jwt", token);
+    storage.setItem("role", role);
   }, [success]);
 
   return (
