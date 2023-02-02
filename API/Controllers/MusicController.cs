@@ -38,35 +38,36 @@ namespace API.Controllers
         [HttpGet("{filename}", Name = "GetMusic"),]
         public async Task<ActionResult<MusicDto>> GetMusic(string filename)
         {
-            var rtn = await _musicRepository.GetMusicByUserNameAsync(filename);
+            var rtn = await _musicRepository.GetMusicByFileNameAsync(filename);
 
             return rtn;
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateMusic(MusicDtoUpdate musicDtoUpdate)
+        public async Task<ActionResult> UpdateMusic(MusicDto musicDto)
         {
-            
-           var musicFile = await _musicRepository.GetMusicAsync();
 
-            // var newMusicFile = musicFile {
-            //     description = musicDtoUpdate.Description,
-            //     Category = musicDtoUpdate.Category
-            // };
+            var musicRepo = await _musicRepository.GetMusicByIdAsync(musicDto.Id);
 
-            // _musicRepository.Update(newMusicFile);
+            musicRepo.filename = musicDto.FileName;
+            musicRepo.description = musicDto.Description;
+            musicRepo.price = musicDto.Price;
+            musicRepo.artist = musicDto.Artist;
+            // musicRepo.Tags = (ICollection<ProductTag>)musicDto.Tag;
 
+
+            _musicRepository.Update(musicRepo);
 
             if (await _musicRepository.SaveAllAsync())
             {
-                return NoContent();
+                return Ok(musicRepo);
             }
-            return BadRequest("Failed to update user");
+            return BadRequest("Failed to update product");
 
         }
 
         [HttpPost("add-music")]
-        public async Task<ActionResult<AppMusic>> AddMusic(IFormFile file)
+        public async Task<ActionResult<Product>> AddMusic(IFormFile file)
         {
 
             var result = await _dataCloudService.UploadVideoAsync(file);
@@ -75,7 +76,7 @@ namespace API.Controllers
             {
                 return BadRequest(result.Error.Message);
             }
-            var music = new AppMusic
+            var music = new Product
             {
                 filename = ConvertPublicIdToName(result.PublicId),
                 artist = "Itamar Miron",
@@ -85,24 +86,24 @@ namespace API.Controllers
 
             if (await MusicExists(music.public_id)) return BadRequest("File already exist");
 
-            _context.Music.Add(music);
+            _context.Products.Add(music);
             await _context.SaveChangesAsync();
             return music;
 
-            
+
         }
 
         [HttpDelete("delete-music/{Id}")]
         public async Task<ActionResult> DeleteMusic(int Id)
         {
             var musicRepo = await _musicRepository.GetMusicByIdAsync(Id);
-                      
+
             var result = await _dataCloudService.DeleteFileAsync(musicRepo.public_id);
 
             if (result.Error != null) return BadRequest(result.Error.Message + "File not found on cloud");
 
 
-            _context.Music.Remove(musicRepo);
+            _context.Products.Remove(musicRepo);
             await _dataCloudService.DeleteFileAsync(musicRepo.public_id);
 
             if (await _musicRepository.SaveAllAsync()) return Ok(musicRepo.public_id + "was deleted");
@@ -112,14 +113,14 @@ namespace API.Controllers
 
         private async Task<bool> MusicExists(string publicId)
         {
-            return await _context.Music.AnyAsync(x => x.public_id == publicId);
+            return await _context.Products.AnyAsync(x => x.public_id == publicId);
         }
 
         private string ConvertPublicIdToName(string name)
         {
-            
+
             name = name.Replace("/", " ");
- 
+
             name = name.Replace("_", " ");
 
             // Capitalize first letter of each word

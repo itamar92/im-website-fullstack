@@ -112,6 +112,7 @@ const Login = ({ isOpen }: LoginProps) => {
       navigate(from, { replace: true });
       closeLoginDialog();
       setIsLoggedIn(true);
+
     } catch (err: any) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -219,7 +220,7 @@ const Login = ({ isOpen }: LoginProps) => {
             <Typography variant={"inherit"} color={"#fff"}>
               Need an Account?
             </Typography>
-            <Button onClick={() => onSignUpClick()}>Sign Up</Button>
+            <Button variant="outlined" color="inherit" sx={{color:"white", mt:1}} onClick={() => onSignUpClick()}>Sign Up</Button>
           </Box>
         </Box>
       </Container>

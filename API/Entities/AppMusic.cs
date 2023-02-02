@@ -17,7 +17,6 @@ namespace API.Entities
         public string url { get; set; }
         public string public_id { get; set; }
 
-        public ICollection<OrderDetail> OrderDetails { get; set; }
         public ICollection<ProductTag> Tags { get; set; }
         // public int ProductId { get; set; }
         // public Product Product { get; set; }
