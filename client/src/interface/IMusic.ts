@@ -3,7 +3,8 @@ export interface IMusic {
     fileName: string;
     artist: string;
     description: string;
-    tag: string;
     url: string;
-    art:string
+    price:number;
+    tag: string;
+    
 }

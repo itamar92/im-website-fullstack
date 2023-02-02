@@ -25,8 +25,15 @@ import {
   VolumeOffRounded,
   VolumeUpRounded,
 } from "@mui/icons-material";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
-import './musicStyles.css'
+import "./musicStyles.css";
+import EditProduct from "./EditProduct";
+import { useAuthProvider } from "../../Context/AuthProvider";
+import { useMusicProvider } from "../../Context/ProductsContext";
+import { DialogAlert } from "../../Components/DialogAlert";
+import { useSnackbar } from "../../hooks/useSnackbar";
 
 interface Props {
   product: IMusic;
@@ -41,16 +48,13 @@ const ProductCard: React.FC<Props> = ({ product }) => {
   const [volume, setVolume] = useState(0.5);
   const [isVolumeOpen, setIsVolumeOpen] = useState(false);
   const [volumeSliderHeight, setVolumeHeight] = useState(0);
+  const { isEditCardOpen, setEditCardOpen, setProductId } = useMusicProvider();
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const { deleteMusic } = useMusicProvider();
+  const { showSnackbar } = useSnackbar();
+  const { role } = useAuthProvider();
+  // const [chosenEditProductId, setProductId] = useState<number>();
   const { increaseCartQuantity, decreaseCartQuantity } = useShoppingCart();
-  // let audioElement = document.getElementById("audio_element") as HTMLAudioElement;
-  // let canvasElement = document.getElementById("canvas_element")as HTMLCanvasElement;
-
-  // if(audioElement !== null || canvasElement !== null){
-  //   const waveAnimation = new Wave(audioElement, canvasElement);
-  //  waveAnimation.addAnimation(new waveAnimation.animations.Flower());
-  // }
-
- 
 
   const theme = useTheme();
 
@@ -103,13 +107,20 @@ const ProductCard: React.FC<Props> = ({ product }) => {
     !isVolumeOpen ? setVolumeHeight(50) : setVolumeHeight(0);
   };
 
+  const handleEditCardDialog = (id: number) => {
+    setEditCardOpen(!isEditCardOpen);
+    setProductId(id);
+  };
+
+  const handleDeleteCardDialog = (id: number) => {
+    deleteMusic(id);
+    setDialogOpen(!isDialogOpen);
+    showSnackbar({ severity: "success", message: "Product Deleted " });
+  };
+
   useEffect(() => {
     audioRef.current!.volume = volume;
   }, [volume]);
-
-  useEffect(() => {
-   
-  }, []);
 
   return (
     <Paper
@@ -120,7 +131,8 @@ const ProductCard: React.FC<Props> = ({ product }) => {
         width: "40rem",
       }}
     >
-      <audio id="audio_element"
+      <audio
+        id="audio_element"
         ref={audioRef}
         src={product.url}
         onPlay={handleTimeUpdate}
@@ -130,9 +142,13 @@ const ProductCard: React.FC<Props> = ({ product }) => {
       />
       <List dense={true}>
         <ListItem>
-          <ListItemAvatar sx={{borderRadius:'100%'}} >
-            {/* <canvas width={66} height={66} id="canvas_element"/> */}
-            <Avatar className={isPlaying? "animation__spin":""} src={LOGO} alt="logo" sx={{ width: 66, height: 66}} />
+          <ListItemAvatar sx={{ borderRadius: "100%" }}>
+            <Avatar
+              className={isPlaying ? "animation__spin" : ""}
+              src={LOGO}
+              alt="logo"
+              sx={{ width: 66, height: 66 }}
+            />
           </ListItemAvatar>
           <ListItemText
             color="primary"
@@ -141,7 +157,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
               fontSize: 22,
               color: "primary.contrastText",
             }}
-            secondary={product.artist}
+            secondary={product.description}
             secondaryTypographyProps={{ fontSize: 15, color: "info.main" }}
           />
         </ListItem>
@@ -269,11 +285,38 @@ const ProductCard: React.FC<Props> = ({ product }) => {
             </Button>
           }
         >
+          {role.includes("Admin" || "Moderator") ? (
+            <Stack direction={"row"} gap={2}>
+              <IconButton
+                color="info"
+                onClick={() => handleEditCardDialog(product.id)}
+              >
+                <BorderColorOutlinedIcon />
+              </IconButton>
+              <IconButton
+                color="error"
+                onClick={() => setDialogOpen(!isDialogOpen)}
+              >
+                <DeleteOutlineOutlinedIcon />
+              </IconButton>
+            </Stack>
+          ) : (
+            ""
+          )}
           <Typography color={"white"} sx={{ pl: 6 }}>
             $3
           </Typography>
         </ListItem>
       </List>
+      <DialogAlert
+        isOpen={isDialogOpen}
+        onClose={() => setDialogOpen(!isDialogOpen)}
+        onAction1={() => handleDeleteCardDialog(product.id)}
+        onAction2={() => setDialogOpen(!isDialogOpen)}
+        title={"Delete File"}
+        message={"Are you sure you want to delete this file?"}
+        buttonText={"Continue"}
+      />
     </Paper>
   );
 };

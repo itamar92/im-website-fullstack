@@ -19,26 +19,28 @@ namespace API.Data
         }
         public async Task<IEnumerable<MusicDto>> GetMusicAsync()
         {
-            return await _context.Music
+            return await _context.Products
             .Select(music => new MusicDto
             {
                 Id = music.Id,
                 FileName = music.filename,
                 Artist = music.artist,
                 Description = music.description,
-                Url = music.url
+                Url = music.url,
+                Price = music.price
             })
              .ToListAsync();
         }
 
-        public async Task<AppMusic> GetMusicByIdAsync(int id)
+        public async Task<Product> GetMusicByIdAsync(int id)
         {
-            return await _context.Music.FindAsync(id);
+            return await _context.Products.FindAsync(id);
         }
 
-        public async Task<MusicDto> GetMusicByUserNameAsync(string filename)
+        public async Task<MusicDto> GetMusicByFileNameAsync(string filename)
         {
-            return await _context.Music
+            return await _context.Products
+            .Include(x => x.Tags)
             .Where(x => x.filename == filename)
              .Select(music => new MusicDto
              {
@@ -47,6 +49,7 @@ namespace API.Data
                  Artist = music.artist,
                  Description = music.description,
                  Url = music.url,
+                 Price = music.price
              })
             .SingleOrDefaultAsync();
 
@@ -57,9 +60,9 @@ namespace API.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void Update(AppMusic music)
+        public void Update(Product music)
         {
-            _context.Entry<AppMusic>(music).State = EntityState.Modified;
+            _context.Entry<Product>(music).State = EntityState.Modified;
         }
     }
 }

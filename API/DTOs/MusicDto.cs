@@ -11,6 +11,8 @@ namespace API.DTOs
         public string Artist { get; set; }
         public string Description { get; set; }
         public string Url { get; set; }
+        public decimal Price {get; set;} 
+        public List<string> Tag { get; set; }
 
     }
 }

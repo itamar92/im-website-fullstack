@@ -57,19 +57,19 @@ namespace API.Data
         public static async Task SeedMusic(DataContext context)
         {
 
-            if (await context.Music.AnyAsync()) return;
+            if (await context.Products.AnyAsync()) return;
 
 
             var musicData = await System.IO.File.ReadAllTextAsync("Data/MusicSeedData.json");
 
             // deserialize the json data into a list of AppUser objects
-            var musics = JsonSerializer.Deserialize<List<AppMusic>>(musicData);
+            var musics = JsonSerializer.Deserialize<List<Product>>(musicData);
 
             foreach (var file in musics)
             {
                 // adding the files to our db
 
-                context.Music.Add(file); // this is not the actual adding, only tracking the operation
+                context.Products.Add(file); // this is not the actual adding, only tracking the operation
             }
 
             await context.SaveChangesAsync();
