@@ -1,6 +1,6 @@
 export interface IMusicUpdate{
     
-    filename?: string;
+    fileName?: string;
     artist?: string;
     description?: string;
     price?:number;

@@ -312,7 +312,7 @@ const ProductCard: React.FC<Props> = ({ product }) => {
         isOpen={isDialogOpen}
         onClose={() => setDialogOpen(!isDialogOpen)}
         onAction1={() => handleDeleteCardDialog(product.id)}
-        onAction2={() => setDialogOpen(!isDialogOpen)}
+        onCancel={() => setDialogOpen(!isDialogOpen)}
         title={"Delete File"}
         message={"Are you sure you want to delete this file?"}
         buttonText={"Continue"}

@@ -1,4 +1,6 @@
+import { AxiosProgressEvent } from "axios";
 import { IMusic } from "interface/IMusic";
+import { IMusicUpdate } from "interface/IMusicUpdate";
 import http from "../interceptors/axios";
 
 class ProductsDataService{
@@ -10,11 +12,20 @@ class ProductsDataService{
         return await http.get(`music/${fileName}`);
     }
 
-    async create(file:any){
-        return await http.post("music", file);
+    async upload(file:File, onUploadProgress:((progressEvent: AxiosProgressEvent) => void),onError:(error:string) => void)
+    {
+        let formData = new FormData();
+        formData.append("musicFile", file, file.name);
+try {
+        return await http.post("music/add-music", {formData }, {
+            headers:{"Content-Type": "multipart/form-data"},
+            onUploadProgress, 
+        });
+    }catch(error ) {return onError(error as string)}
+    
     }
 
-    async update(data:IMusic){
+    async update(data:IMusicUpdate){
         return await http.put("music", data);
     }
 

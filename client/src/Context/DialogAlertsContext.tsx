@@ -22,18 +22,19 @@ const DialogAlertProvider: React.FC<React.PropsWithChildren> = ({
 
   const onAction1 = () => {
     return true;
-  }
+  };
   const onAction2 = () => {
     setOpen(false);
     setDialogState(undefined);
-  }
+  };
 
   return (
     <DialogAlertContext.Provider
       value={{
         showDialogAlert: (state) => {
           if (!state) return;
-          setDialogState(state); setOpen(true);
+          setDialogState(state);
+          setOpen(true);
         },
       }}
     >
@@ -43,7 +44,7 @@ const DialogAlertProvider: React.FC<React.PropsWithChildren> = ({
           isOpen={Boolean(isOpen && dialogState)}
           onClose={onClose}
           onAction1={onAction1}
-          onAction2={onAction2}
+          onCancel={onAction2}
           {...dialogState}
         />
       }
@@ -54,7 +55,7 @@ const DialogAlertProvider: React.FC<React.PropsWithChildren> = ({
 interface DialogState {
   message: string;
   title: string;
-  buttonText:string;
+  buttonText: string;
 }
 
 export type { DialogState };

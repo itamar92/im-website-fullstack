@@ -7,11 +7,11 @@ import React, {
   SetStateAction,
   useContext,
 } from "react";
-import axios from "axios";
-import "../interceptors/axios";
+import productsService from "Services/products.service";
 import { IMusic } from "../interface/IMusic";
 import { IMusicUpdate } from "../interface/IMusicUpdate";
 import EditProduct from "../Pages/Products/EditProduct";
+import { Dialog } from "@mui/material";
 
 type MusicContextType = {
   music: IMusic | any;
@@ -21,7 +21,7 @@ type MusicContextType = {
   updateProduct: IMusicUpdate | any;
   setUpdatedProduct: (updateProduct: IMusicUpdate) => void;
   setProductId: Dispatch<SetStateAction<number | undefined>>;
-  updateMusic: (music: IMusic) => void;
+  updateMusic: (music: IMusicUpdate) => void;
   deleteMusic: (id: number) => void;
 };
 
@@ -45,7 +45,7 @@ export const ProductsProvider = ({ children }: MusicContextProps) => {
 
   const getMusic = async () => {
     try {
-      const response = await axios.get<IMusic[]>("music");
+      const response = await productsService.getAll();
       setMusic(response.data);
     } catch (err: any) {
       if (!err?.response) {
@@ -62,9 +62,9 @@ export const ProductsProvider = ({ children }: MusicContextProps) => {
     getMusic();
   }, []);
 
-  const updateMusic = async (updateProduct: IMusic) => {
+  const updateMusic = async (updateProduct: IMusicUpdate) => {
     try {
-      const response = await axios.put("music", updateProduct);
+      await productsService.update(updateProduct);
       console.log("updated music");
       getMusic();
     } catch (err: any) {
@@ -79,7 +79,7 @@ export const ProductsProvider = ({ children }: MusicContextProps) => {
 
   const deleteMusic = async (id: number) => {
     try {
-      const request = await axios.delete(`music/delete-music/${id}`);
+      const request = await productsService.delete(id);
       console.log("file deleted");
       console.log(request);
       getMusic();
@@ -92,17 +92,6 @@ export const ProductsProvider = ({ children }: MusicContextProps) => {
       }
     }
   };
-
-  const addMusic = async () => {
-    try {
-      const response = await axios.post("music/add-music")
-      
-    } catch (err:any) {
-      
-    }
-  }
-
-  useEffect(() => {}, []);
 
   return (
     <ProductsContext.Provider
@@ -119,7 +108,9 @@ export const ProductsProvider = ({ children }: MusicContextProps) => {
       }}
     >
       {children}
-      <EditProduct isOpen={isEditCardOpen} id={chosenEditProductId} />
+      <Dialog open={isEditCardOpen}>
+        <EditProduct isOpen={isEditCardOpen} id={chosenEditProductId} />
+      </Dialog>
     </ProductsContext.Provider>
   );
 };

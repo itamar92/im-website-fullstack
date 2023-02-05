@@ -1,15 +1,16 @@
 import { IconButton, List, ListItem, ListItemText, Paper } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import { useMusicProvider } from "../../Context/ProductsContext";
 import { IMusic } from "../../interface/IMusic";
 import ProductCard from "./ProductCard";
 import { useAuthProvider } from "../../Context/AuthProvider";
+import { Link } from "react-router-dom";
+import { StyledLink } from "Utility/Mui-cssElements";
 
 function Products() {
-  const { music, setMusic } = useMusicProvider();
+  const { music } = useMusicProvider();
   const { role } = useAuthProvider();
 
   return (
@@ -30,7 +31,7 @@ function Products() {
             <List>
               <ListItem>
                 <IconButton color="secondary" size="large">
-                   <AddBoxOutlinedIcon fontSize="large" />
+                 <StyledLink to="/add-product" color="inherit"> <AddBoxOutlinedIcon fontSize="large" /></StyledLink>
                 </IconButton>
               
               <ListItemText  primary="Add New"

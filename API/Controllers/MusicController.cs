@@ -42,6 +42,21 @@ namespace API.Controllers
 
             return rtn;
         }
+        [HttpGet("{id}", Name = "GetMusicId"),]
+        public async Task<ActionResult<MusicDto>> GetMusic(int id)
+        {
+            var music = await _musicRepository.GetMusicByIdAsync(id);
+
+            return new MusicDto
+            {
+                Id = music.Id,
+                FileName = music.filename,
+                Artist = music.artist,
+                Description = music.description,
+                Url = music.url,
+                Price = music.price
+            };
+        }
 
         [HttpPut]
         public async Task<ActionResult> UpdateMusic(MusicDto musicDto)
@@ -85,6 +100,10 @@ namespace API.Controllers
             };
 
             if (await MusicExists(music.public_id)) return BadRequest("File already exist");
+
+            // music.filename = musicDto.FileName;
+            // music.description = musicDto.Description;
+            // music.price = musicDto.price;
 
             _context.Products.Add(music);
             await _context.SaveChangesAsync();
