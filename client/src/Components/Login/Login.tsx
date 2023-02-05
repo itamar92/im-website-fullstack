@@ -4,7 +4,7 @@ import { useAuthProvider } from "../../Context/AuthProvider";
 //import axios from "../../interceptors/axios";
 import axios from "axios";
 import * as storage from "../../Utility/LocalStorage";
-import "../../interceptors/axios";
+import "../../interceptors/axiosAuth";
 import jwt from "jwt-decode";
 import { IUser } from "../../interface/IUser";
 import Container from "@mui/system/Container";
@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
+import { IUserLogin } from "interface/IUserLogin";
 
 //#endregion
 type LoginProps = {
@@ -55,12 +56,6 @@ const Login = ({ isOpen }: LoginProps) => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
   const handleClickAway = () => {
     closeLoginDialog();
   };
@@ -84,7 +79,7 @@ const Login = ({ isOpen }: LoginProps) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post<IUserRequest, { data: IUser }>(
+      const response = await axios.post<IUserLogin, { data: IUser }>(
         "account/login",
         {
           userName,
@@ -94,7 +89,9 @@ const Login = ({ isOpen }: LoginProps) => {
           headers: { "Access-Control-Allow-Origin": "*" },
         }
       );
-      axios.defaults.headers.common["Authorization"] = `Brearer ${response.data.token}`;
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Brearer ${response.data.token}`;
       const tokenRes = response.data.token;
       const decoded: IUser = jwt(tokenRes as string);
 
@@ -112,7 +109,6 @@ const Login = ({ isOpen }: LoginProps) => {
       navigate(from, { replace: true });
       closeLoginDialog();
       setIsLoggedIn(true);
-
     } catch (err: any) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -220,17 +216,19 @@ const Login = ({ isOpen }: LoginProps) => {
             <Typography variant={"inherit"} color={"#fff"}>
               Need an Account?
             </Typography>
-            <Button variant="outlined" color="inherit" sx={{color:"white", mt:1}} onClick={() => onSignUpClick()}>Sign Up</Button>
+            <Button
+              variant="outlined"
+              color="inherit"
+              sx={{ color: "white", mt: 1 }}
+              onClick={() => onSignUpClick()}
+            >
+              Sign Up
+            </Button>
           </Box>
         </Box>
       </Container>
     </Dialog>
   );
 };
-
-interface IUserRequest {
-  userName: string;
-  password: string;
-}
 
 export default Login;

@@ -35,15 +35,15 @@ namespace API.Controllers
             return Ok(musicFile);
         }
 
-        [HttpGet("{filename}", Name = "GetMusic"),]
-        public async Task<ActionResult<MusicDto>> GetMusic(string filename)
-        {
-            var rtn = await _musicRepository.GetMusicByFileNameAsync(filename);
+        // [HttpGet("{filename}", Name = "GetMusic"),]
+        // public async Task<ActionResult<MusicDto>> GetMusic(string filename)
+        // {
+        //     var rtn = await _musicRepository.GetMusicByFileNameAsync(filename);
 
-            return rtn;
-        }
-        [HttpGet("{id}", Name = "GetMusicId"),]
-        public async Task<ActionResult<MusicDto>> GetMusic(int id)
+        //     return rtn;
+        // }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<MusicDto>> GetMusicId(int id)
         {
             var music = await _musicRepository.GetMusicByIdAsync(id);
 

@@ -27,7 +27,7 @@ export default function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     useState<null | HTMLElement>(null);
-  //const authContext = useContext(AuthContext);
+  const {role} = useAuthProvider();  
   const { openLoginDialog, openRegisterDialog, isLoggedIn, setLoggedOutUser } = useAuthProvider();
   const { openCart, cartQuantity } = useShoppingCart();
   const [scroll, setScroll] = useState(false);
@@ -195,6 +195,12 @@ export default function Navbar() {
                   Contact
                 </StyledLink>
               </MenuItem>
+              {role.includes("Admin" || "Moderator") &&
+              <MenuItem onClick={handleCloseNavMenu}>
+                <StyledLink to="/admin" color="black">
+                  Admin
+                </StyledLink>
+              </MenuItem>}
             </Menu>
           </Box>
           <StyledLink to="/#head">
@@ -247,6 +253,10 @@ export default function Navbar() {
             <Button onClick={handleCloseNavMenu}>
               <StyledLink to="/#contact">Contact</StyledLink>
             </Button>
+            {role.includes("Admin" || "Moderator") &&
+            <Button variant="outlined" color="secondary" onClick={handleCloseNavMenu}>
+              <StyledLink to="/admin" >Admin</StyledLink>
+            </Button>}
           </Box>
           <IconButton size="large" color="inherit" onClick={openCart}>
             <Badge badgeContent={cartQuantity} color="error">

@@ -1,21 +1,29 @@
 import { AxiosProgressEvent } from "axios";
-import { IMusic } from "interface/IMusic";
 import { IMusicUpdate } from "interface/IMusicUpdate";
-import http from "../interceptors/axios";
+import http from "../interceptors/axiosProducts";
 
 class ProductsDataService{
     async getAll(){
-        return await http.get("music");
+        return await http.get("music" ,
+        {
+            headers:{"Access-Control-Allow-Origin": "*"}
+        });
     }
 
     async get(fileName:string){
         return await http.get(`music/${fileName}`);
     }
+    async getId(id:number){
+        return await http.get(`music/${id}`, 
+        {
+            headers:{"Access-Control-Allow-Origin": "*"}
+        });
+    }
 
     async upload(file:File, onUploadProgress:((progressEvent: AxiosProgressEvent) => void),onError:(error:string) => void)
     {
         let formData = new FormData();
-        formData.append("musicFile", file, file.name);
+        formData.append("file", file);
 try {
         return await http.post("music/add-music", {formData }, {
             headers:{"Content-Type": "multipart/form-data"},
@@ -30,7 +38,7 @@ try {
     }
 
     async delete(id:number){
-        return await http.delete(`music/${id}`)
+        return await http.delete(`music/delete-music/${id}`)
     }
 }
 

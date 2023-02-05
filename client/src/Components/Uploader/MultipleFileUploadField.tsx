@@ -7,18 +7,19 @@ import { FileRejection, useDropzone } from "react-dropzone";
 import productsService from "Services/products.service";
 import { SingleFileUploadWithProgress } from "./SingleFileUploadWithProgress";
 import { UploadError } from "./UploaderError";
-import http from "../../interceptors/axios";
+// import "../../interceptors/axiosProducts";
+import axios from "axios";
 
 export function MultipleFileUploadField() {
   const [files, setFiles] = useState<File | null>();
   const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
   const [newProduct, setNewProduct] = useState({});
   const { showSnackbar } = useSnackbar();
+  const { getLastProductId, getMusic } = useMusicProvider();
 
   const onDrop = useCallback((accFiles: File[], rejFiles: FileRejection[]) => {
     setFiles(accFiles[0]);
     setRejectedFiles(rejFiles);
-    console.log(files);
   }, []);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -37,39 +38,64 @@ export function MultipleFileUploadField() {
     }
   };
 
-  const onUpload = async () => {
+  const onUpload2 = async () => {
     if (files) {
+      let formData = new FormData();
+      formData.append("file", files);
       try {
-        let formData = new FormData();
-        formData.append("musicFile", files);
-        console.log(formData.values);
-        const response = await http.post("music/add-music", {formData }, {
-          headers:{"Content-Type": "multipart/form-data"}});
-        console.log(response.data);
-      } catch (error) {
-        console.log(error);
+        await axios.post("music/add-music", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: function (progressEvent) {
+            if (progressEvent.total) {
+              const percentage =
+                (progressEvent.loaded / progressEvent.total) * 100;
+              setProgress(Math.round(percentage));
+            }
+          },
+        });
+        if (progress == 100)
+          showSnackbar({
+            message: "upload complete!",
+            severity: "success",
+          });
+        getMusic();
+        let newItemId = getLastProductId() + 1;
+        console.log("new item Id", newItemId);
+        const newProductAdd = await productsService.getId(newItemId);
+        setNewProduct(newProductAdd);
+      } catch (error: any) {
+        if (error.response.status === 400)
+          showSnackbar({ message: "File already exist", severity: "error" });
+        else showSnackbar({ message: `${error}`, severity: "error" });
       }
+    }
+  };
 
-      // const response = await productsService.upload(
-      //   files,
-      //   (event) => {
-      //     if (event.total) {
-      //       const percentage = (event.loaded / event.total) * 100;
-      //       setProgress(Math.round(percentage));
-      //       if (progress == 100)
-      //         showSnackbar({
-      //           message: "upload complete!",
-      //           severity: "success",
-      //         });
-      //         console.log(progress);
-      //     }
-      // }
-      // (error) => {
-      //   showSnackbar({ message: `${error}`, severity: "error" });
-      //   console.log(error);
-      // }
-      // );
-      // return console.log("response", response);
+  const onUpload = async () => {
+    console.log(files);
+    if (files) {
+      const response = await productsService.upload(
+        files,
+        (event) => {
+          if (event.total) {
+            const percentage = (event.loaded / event.total) * 100;
+            setProgress(Math.round(percentage));
+            if (progress == 100)
+              showSnackbar({
+                message: "upload complete!",
+                severity: "success",
+              });
+            console.log(progress);
+          }
+        },
+        (error) => {
+          showSnackbar({ message: `${error}`, severity: "error" });
+          console.log(error);
+        }
+      );
+      return console.log("response", response);
     }
     return console.log("No File");
   };
@@ -121,13 +147,17 @@ export function MultipleFileUploadField() {
             <SingleFileUploadWithProgress
               onDelete={handleDelete}
               progress={progress}
-              onUpload={onUpload}
+              onUpload={onUpload2}
               file={files as File}
             />
           )}
           {progress == 100 && (
             <Box sx={{ backgroundColor: "#000451" }}>
-              <EditFormProduct onSubmit={handleSubmit} cancelButton={false} />
+              <EditFormProduct
+                onSubmit={handleSubmit}
+                cancelButton={false}
+                initialState={newProduct}
+              />
             </Box>
           )}
         </Box>

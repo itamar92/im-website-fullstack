@@ -10,8 +10,8 @@ import Login from "./Login/Login";
 import { useAuthProvider } from "../Context/AuthProvider";
 import Layout from "./Layout";
 import Unauthorized from "../Pages/Unauthorized";
-import AddProduct from "Pages/Products/AddProduct";
 import { MultipleFileUploadField } from "./Uploader/MultipleFileUploadField";
+import Admin from "Pages/Admin";
 
 function AppRoutes() {
   const { isLoggedIn } = useAuthProvider();
@@ -34,6 +34,7 @@ function AppRoutes() {
           {/* Protected Routes For Admins  */}
           <Route element={<RequiredAuth allowedRoles={["Admin","Moderator"]} />}>
           <Route path="/add-product" element={<MultipleFileUploadField/>} />
+          <Route path="/admin" element={<Admin/>} />
 
           </Route>
         </Route>

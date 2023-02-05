@@ -7,7 +7,7 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import "../interceptors/axios";
+import "../interceptors/axiosAuth";
 import jwt from "jwt-decode";
 import Login from "../Components/Login/Login";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -15,6 +15,7 @@ import { IUser } from "../interface/IUser";
 import axios from "axios";
 import Register from "../Components/Register";
 import * as storage from "../Utility/LocalStorage";
+import usersService from "Services/users.service";
 
 type AuthContextType = {
   auth: IUser | any;
@@ -114,7 +115,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setLoggedInUser,
         setLoggedOutUser,
         role,
-        setRole
+        setRole,
       }}
     >
       {children}

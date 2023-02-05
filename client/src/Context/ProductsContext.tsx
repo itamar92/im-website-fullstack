@@ -23,6 +23,10 @@ type MusicContextType = {
   setProductId: Dispatch<SetStateAction<number | undefined>>;
   updateMusic: (music: IMusicUpdate) => void;
   deleteMusic: (id: number) => void;
+  getLastProductId: () => number;
+  getMusic: () => void;
+  loading:boolean;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 interface MusicContextProps {
@@ -42,8 +46,10 @@ export const ProductsProvider = ({ children }: MusicContextProps) => {
   const [isEditCardOpen, setEditCardOpen] = useState(false);
   const [updateProduct, setUpdatedProduct] = useState({});
   const [chosenEditProductId, setProductId] = useState<number | undefined>();
+  const [loading,setIsLoading] = useState(false);
 
   const getMusic = async () => {
+
     try {
       const response = await productsService.getAll();
       setMusic(response.data);
@@ -63,10 +69,12 @@ export const ProductsProvider = ({ children }: MusicContextProps) => {
   }, []);
 
   const updateMusic = async (updateProduct: IMusicUpdate) => {
+    setIsLoading(true);
     try {
       await productsService.update(updateProduct);
       console.log("updated music");
       getMusic();
+      
     } catch (err: any) {
       console.log(updateProduct);
       if (!err?.request) {
@@ -75,9 +83,11 @@ export const ProductsProvider = ({ children }: MusicContextProps) => {
         console.log("Update music Failed");
       }
     }
+    setIsLoading(false);
   };
 
   const deleteMusic = async (id: number) => {
+    setIsLoading(true);
     try {
       const request = await productsService.delete(id);
       console.log("file deleted");
@@ -91,7 +101,14 @@ export const ProductsProvider = ({ children }: MusicContextProps) => {
         console.log("Delete music Failed");
       }
     }
+    setIsLoading(false);
   };
+
+  const getLastProductId = () => {
+    let lastItemInArray = music.slice(-1)[0];
+    console.log(lastItemInArray);
+    return lastItemInArray.id
+  }
 
   return (
     <ProductsContext.Provider
@@ -105,6 +122,10 @@ export const ProductsProvider = ({ children }: MusicContextProps) => {
         setProductId,
         updateMusic,
         deleteMusic,
+        getLastProductId,
+        getMusic,
+        loading,
+        setIsLoading
       }}
     >
       {children}
