@@ -9,13 +9,13 @@ namespace API.Interfaces
 {
     public interface IMusicRepository
     {
-        void Update(AppMusic music);
+        void Update(Product music);
 
         Task<bool> SaveAllAsync();
 
         Task<IEnumerable<MusicDto>> GetMusicAsync();
-        Task<AppMusic> GetMusicByIdAsync(int id);
-        Task<MusicDto> GetMusicByUserNameAsync(string filename);
+        Task<Product> GetMusicByIdAsync(int id);
+        Task<MusicDto> GetMusicByFileNameAsync(string filename);
         
     }
 }

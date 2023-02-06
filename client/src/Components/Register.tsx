@@ -3,9 +3,9 @@ import React, { useRef, useState, useEffect } from "react";
 import { useAuthProvider } from "../Context/AuthProvider";
 //import axios from "../../interceptors/axios";
 import axios from "axios";
-import jwt from "jwt-decode"
+import jwt from "jwt-decode";
 import * as storage from "../Utility/LocalStorage";
-import "../interceptors/axios";
+import "../interceptors/axiosAuth";
 import { IUser } from "../interface/IUser";
 import Container from "@mui/system/Container";
 import FormControl from "@mui/material/FormControl";
@@ -21,6 +21,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { IUserRegister } from "interface/IUserRegister";
 
 //#endregion
 type RegisterProps = {
@@ -30,8 +31,17 @@ type RegisterProps = {
 
 const Register = ({ isOpen }: RegisterProps) => {
   // const authContext = useContext(AuthContext);
-  const { auth, setAuth, closeRegisterDialog, openLoginDialog, setIsLoggedIn, setRole,setToken,role,token } =
-    useAuthProvider();
+  const {
+    auth,
+    setAuth,
+    closeRegisterDialog,
+    openLoginDialog,
+    setIsLoggedIn,
+    setRole,
+    setToken,
+    role,
+    token,
+  } = useAuthProvider();
   const userRef = useRef<HTMLInputElement>();
   const errRef = useRef<HTMLParagraphElement>(null);
 
@@ -55,8 +65,14 @@ const Register = ({ isOpen }: RegisterProps) => {
     //navigate(from, { replace: true });
   };
 
-  const handlePasswMatch = () => {
-    if (password === passwordConfirm) return setPasswordMatch(true);
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleConfirmPasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPasswordConfirm(event.target.value);
   };
 
   const onLoginClick = () => {
@@ -73,64 +89,67 @@ const Register = ({ isOpen }: RegisterProps) => {
   useEffect(() => {
     setErrMsg("");
 
-    if (password.length > 0 && password.length < 4) {
-      setPasswdMsg("need to be between 4 and 8 characters");
+    if (
+      password.length > 0 &&
+      !/^(?=.*[A-Z])(?=.*[0-9]).{8,}$/.test(password)
+    ) {
+      setPasswdMsg(
+        "Password must contain at least one uppercase letter, one digit, and be at least 8 characters long"
+      );
     } else {
       setPasswdMsg("");
       setPasswordErr(false);
     }
-    handlePasswMatch();
-  }, [userName, password, passwordConfirm]);
+  }, [userName, password]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post<IUserRequest, { data: IUser }>(
-        "account/register",
-        {
-          firstName,
-          lastName,
-          userName,
-          password,
-        },
-        {
-          headers: { "Access-Control-Allow-Origin": "*" },
+    if (password !== passwordConfirm) {
+      setErrMsg("Passwords do not match");
+      return;
+    } else
+      try {
+        const response = await axios.post<IUserRegister, { data: IUser }>(
+          "account/register",
+          {
+            firstName,
+            lastName,
+            userName,
+            password,
+          },
+          {
+            headers: { "Access-Control-Allow-Origin": "*" },
+          }
+        );
+
+        const tokenRes = response.data.token;
+        const decoded: IUser = jwt(tokenRes as string);
+
+        setAuth(response.data);
+        setToken(tokenRes as string);
+        setRole(decoded.role);
+        setUserName("");
+        setPassword("");
+        setSuccess(true);
+        closeRegisterDialog();
+        setIsLoggedIn(true);
+      } catch (err: any) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Username already exist");
+        } else if (err.response?.status === 401) {
+          setErrMsg("Unauthorized");
+        } else if (err.response?.status === 500) {
+          setErrMsg("Unauthorized");
+        } else {
+          setErrMsg("Sign Up Failed");
         }
-      );
-      axios.defaults.headers.common[
-        "Authorization"
-      ] = `Brearer ${response.data.token}`;
-
-      const tokenRes  = response.data.token;
-      const decoded:IUser = jwt(tokenRes as string);
-
-      setAuth(response.data);
-      setToken(tokenRes as string);
-      setRole(decoded.role);
-      setUserName("");
-      setPassword("");
-      setSuccess(true);
-      closeRegisterDialog();
-      setIsLoggedIn(true);
-
-     
-    } catch (err: any) {
-      if (!err?.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 400) {
-        setErrMsg("Username already exist");
-      } else if (err.response?.status === 401) {
-        setErrMsg("Unauthorized");
-      } else if (err.response?.status === 500) {
-        setErrMsg("Unauthorized");
-      } else {
-        setErrMsg("Sign Up Failed");
+        if (errRef.current) {
+          errRef.current.focus();
+        }
       }
-      if (errRef.current) {
-        errRef.current.focus();
-      }
-    }
   };
 
   useEffect(() => {
@@ -138,7 +157,7 @@ const Register = ({ isOpen }: RegisterProps) => {
       firstname: auth.firstname,
       username: auth.username,
     });
-    storage.setItem("jwt",token);
+    storage.setItem("jwt", token);
     storage.setItem("role", role);
   }, [success]);
 
@@ -228,7 +247,7 @@ const Register = ({ isOpen }: RegisterProps) => {
                   <OutlinedInput
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={handlePasswordChange}
                     value={password}
                     required
                     onFocus={() => setPasswordErr(true)}
@@ -254,7 +273,7 @@ const Register = ({ isOpen }: RegisterProps) => {
                   <OutlinedInput
                     type={showPassword ? "text" : "password"}
                     placeholder="Confirm Password"
-                    onChange={(e) => setPasswordConfirm(e.target.value)}
+                    onChange={handleConfirmPasswordChange}
                     value={passwordConfirm}
                     required
                     autoComplete="off"
@@ -283,19 +302,19 @@ const Register = ({ isOpen }: RegisterProps) => {
             <Typography variant={"inherit"} color={"#fff"}>
               Already have an Account?
             </Typography>
-            <Button onClick={() => onLoginClick()}>Login</Button>
+            <Button
+              variant="outlined"
+              color="inherit"
+              sx={{ color: "white", mt: 1 }}
+              onClick={() => onLoginClick()}
+            >
+              Login
+            </Button>
           </Box>
         </Box>
       </Container>
     </Dialog>
   );
 };
-
-interface IUserRequest {
-  firstName: string;
-  lastName: string;
-  userName: string;
-  password: string;
-}
 
 export default Register;

@@ -36,8 +36,14 @@ function About() {
             p={4}
             justifyContent={"center"}
           >
-            <Card sx={{width:{xs:"20rem",md:"38rem"},height:{xs:"13rem",md:"24rem"},borderRadius:3 }}>
-            {/* <Box
+            <Card
+              sx={{
+                width: { xs: "20rem", md: "38rem" },
+                height: { xs: "13rem", md: "24rem" },
+                borderRadius: 3,
+              }}
+            >
+              {/* <Box
               position="absolute"
               sx={{
                 left: { xs: "0rem", md: "22rem" },
@@ -49,27 +55,28 @@ function About() {
                 borderRadius: "1.5rem",
               }}
             /> */}
-            
-            <CardMedia
-              component="img"
-              alt={photos[currentIndex].name}
-              image={photos[currentIndex].url}
-              title={photos[currentIndex].name}
-              sx={{
-                // width: { xs: "27rem", md: "40rem" },
-                // height: { md: "27rem" },
-                objectFit: "cover",
-              }}
-            />
+
+              <CardMedia
+                component="img"
+                alt={photos[currentIndex].name}
+                image={photos[currentIndex].url}
+                title={photos[currentIndex].name}
+                sx={{
+                  // width: { xs: "27rem", md: "40rem" },
+                  // height: { md: "27rem" },
+                  objectFit: "cover",
+                }}
+              />
             </Card>
 
-            <Grid item lg={4} className="about__content" sx={{zIndex:1}}>
+            <Grid item lg={4} className="about__content" sx={{ zIndex: 1 }}>
               <p>
-                Here you could find Original Royelty music for your videos,
-                commercials,Podcast or youtube videos. By clicking on the
-                Products page you can listen to all kind of diffrent style of
-                music and with a simple click it will be sent to your email
-                account. This site was built by me using .NET ASP and ReactTS.
+                This website brings together two important aspects of my work -
+                my passion for music and my skills as a music producer and a
+                software engineer. The website serves as a platform for me to
+                share my music library with the world, and also serves as a
+                portfolio of my abilities as a Fullstack Programmer.  
+                I created  this website using ASP.Net and React Ts.
               </p>
             </Grid>
           </Grid>

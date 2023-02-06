@@ -1,6 +1,5 @@
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using API.Entities;
@@ -29,7 +28,7 @@ namespace API.Data
                 new AppRole{Name = "Moderator"},
             };
 
-            //3. add the roles to the manager
+            //add the roles to the manager
             foreach (var role in roles)
             {
                 await roleManager.CreateAsync(role);
@@ -46,7 +45,9 @@ namespace API.Data
 
             var admin = new AppUser
             {
-                UserName = "admin"
+                UserName = "admin",
+                FirstName = "admin"
+
             };
 
             await userManager.CreateAsync(admin, "Pa$$w0rd");
@@ -57,23 +58,68 @@ namespace API.Data
         public static async Task SeedMusic(DataContext context)
         {
 
-            if (await context.Music.AnyAsync()) return;
+            if (await context.Products.AnyAsync()) return;
 
 
             var musicData = await System.IO.File.ReadAllTextAsync("Data/MusicSeedData.json");
 
             // deserialize the json data into a list of AppUser objects
-            var musics = JsonSerializer.Deserialize<List<AppMusic>>(musicData);
+            var musics = JsonSerializer.Deserialize<List<Product>>(musicData);
 
             foreach (var file in musics)
             {
-                // adding the files to our db
+                // adding the files to db
 
-                context.Music.Add(file); // this is not the actual adding, only tracking the operation
+                context.Products.Add(file);
             }
 
             await context.SaveChangesAsync();
 
+        }
+        public static async Task SeedTag(DataContext context)
+        {
+
+            if (await context.Tags.AnyAsync()) return;
+
+
+            var tagData = await System.IO.File.ReadAllTextAsync("Data/TagSeedData.json");
+
+            var tags = JsonSerializer.Deserialize<List<Tag>>(tagData);
+
+            foreach (var name in tags)
+            {
+
+                context.Tags.Add(name);
+            }
+
+            await context.SaveChangesAsync();
+
+        }
+
+        public static async Task SeedProductTag(DataContext context)
+        {
+            if (await context.ProductTags.AnyAsync()) return;
+
+            var products = context.Products.ToList();
+            var tags = context.Tags.ToList();
+
+            var productTags = new List<ProductTag>
+        {
+            new ProductTag { Product = products[0], Tag = tags[6] },
+            new ProductTag { Product = products[0], Tag = tags[2] },
+            new ProductTag { Product = products[1], Tag = tags[5] },
+            new ProductTag { Product = products[2], Tag = tags[4] },
+            new ProductTag { Product = products[2], Tag = tags[6] },
+            new ProductTag { Product = products[3], Tag = tags[0] },
+            new ProductTag { Product = products[3], Tag = tags[4] },
+            new ProductTag { Product = products[3], Tag = tags[3] },
+            new ProductTag { Product = products[4], Tag = tags[4] },
+            new ProductTag { Product = products[4], Tag = tags[6] },
+            new ProductTag { Product = products[4], Tag = tags[7] }
+        };
+
+            context.ProductTags.AddRange(productTags);
+            context.SaveChanges();
         }
     }
 }

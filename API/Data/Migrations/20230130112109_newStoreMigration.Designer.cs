@@ -3,18 +3,52 @@ using System;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230130112109_newStoreMigration")]
+    partial class newStoreMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.13");
+
+            modelBuilder.Entity("API.Entities.AppMusic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("artist")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("filename")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("public_id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("url")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Music");
+                });
 
             modelBuilder.Entity("API.Entities.AppRole", b =>
                 {
@@ -197,6 +231,9 @@ namespace API.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("AppMusicId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("INTEGER");
 
@@ -204,6 +241,8 @@ namespace API.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AppMusicId");
 
                     b.HasIndex("ProductId");
 
@@ -350,6 +389,10 @@ namespace API.Data.Migrations
 
             modelBuilder.Entity("API.Entities.ProductTag", b =>
                 {
+                    b.HasOne("API.Entities.AppMusic", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("AppMusicId");
+
                     b.HasOne("API.Entities.Product", "Product")
                         .WithMany("Tags")
                         .HasForeignKey("ProductId")
@@ -401,6 +444,11 @@ namespace API.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("API.Entities.AppMusic", b =>
+                {
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("API.Entities.AppRole", b =>

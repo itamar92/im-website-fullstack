@@ -22,7 +22,7 @@ namespace API.Services
                 config.Value.ApiKey,
                 config.Value.ApiSecret
             );
-            // paaing the cofiguration in a dedicated object
+            
             _cloudinary = new Cloudinary(acc);
         }
 

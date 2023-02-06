@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Security.Cryptography;
+
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -19,7 +16,6 @@ namespace API.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        //private readonly DataContext _context;
         private readonly ITokenService _tokenService;
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
         {
@@ -33,16 +29,12 @@ namespace API.Controllers
         {
             if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
 
-            //    using var hmac = new HMACSHA512();
 
             var user = new AppUser
             {
-                //     UserName = registerDto.Username.ToLower(),
                 FirstName = registerDto.FirstName,
                 LastName = registerDto.LastName,
-                //   Email = registerDto.Email,
-                //         PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(registerDto.Password)),
-                //       PasswordSalt = hmac.Key
+
             };
             user.UserName = registerDto.Username.ToLower();
 
@@ -55,6 +47,7 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
+                Firstname = user.FirstName,
                 Token = await _tokenService.CreateToken(user),
                 RefreshToken = _tokenService.CreateRefreshToken()
             };
@@ -71,21 +64,7 @@ namespace API.Controllers
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-            //check password
-            //  using var hmac = new HMACSHA512(user.PasswordSalt);
-            // var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(loginDto.Password));
-            // for (int i = 0; i < computedHash.Length; i++)
-            // {
-            //     if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid username or password");
-            // }
 
-            //var userRoles = await _context.Users.
-
-            // var claims = new List<Claim>
-            // {
-            //     new Claim(ClaimTypes.Name, user.UserName),
-            //     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            // };
 
             if (!result.Succeeded) return Unauthorized("invalid password");
 
