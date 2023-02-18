@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1ivYi+rQMcwLT6eYc9HcCHL7uPX/ESI8mYl0WNu12BwWFiGQNc23VmxNFylIocTOI1rtcVbTvdDC8eT9gBUcDw==",
+  "dgSpecHash": "LfgLl9L0E3oo9KQ4As4GEjd/zIdITFzUY7UPHKq5m4nTok8/rfX3K5MgxSYQTog1odKuMNd5WWvGaPOro6+cSQ==",
   "success": true,
-  "projectFilePath": "/Users/itamar/Haker U Class/End Project Fullstack/Im-Website-Fullstack/im-website-fullstack/API/API.csproj",
+  "projectFilePath": "/Users/itamar/Documents/Coding/im-website-fullstack/API/API.csproj",
   "expectedPackageFiles": [
     "/Users/itamar/.nuget/packages/cloudinarydotnet/1.20.0/cloudinarydotnet.1.20.0.nupkg.sha512",
     "/Users/itamar/.nuget/packages/dropbox.api/6.37.0/dropbox.api.6.37.0.nupkg.sha512",

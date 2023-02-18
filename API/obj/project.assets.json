@@ -1912,11 +1912,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/itamar/Haker U Class/End Project Fullstack/Im-Website-Fullstack/im-website-fullstack/API/API.csproj",
+      "projectUniqueName": "/Users/itamar/Documents/Coding/im-website-fullstack/API/API.csproj",
       "projectName": "API",
-      "projectPath": "/Users/itamar/Haker U Class/End Project Fullstack/Im-Website-Fullstack/im-website-fullstack/API/API.csproj",
+      "projectPath": "/Users/itamar/Documents/Coding/im-website-fullstack/API/API.csproj",
       "packagesPath": "/Users/itamar/.nuget/packages/",
-      "outputPath": "/Users/itamar/Haker U Class/End Project Fullstack/Im-Website-Fullstack/im-website-fullstack/API/obj/",
+      "outputPath": "/Users/itamar/Documents/Coding/im-website-fullstack/API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/itamar/.nuget/NuGet/NuGet.Config"

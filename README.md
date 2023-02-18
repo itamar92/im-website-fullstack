@@ -38,6 +38,7 @@ In the project, I used mainly used the Material UI V5 Library to design the UI a
 ## How to Use
 
 First, you need to download the git folder to your computer.
+make sure to have an installed version of .Net  and Node JS on your computer,
 open a terminal for the client Folder and run:
 
 ```bash
