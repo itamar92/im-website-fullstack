@@ -16,6 +16,7 @@ import axios from "axios";
 import Register from "../Components/Register";
 import * as storage from "../Utility/LocalStorage";
 import usersService from "Services/users.service";
+import { useShoppingCart } from "./ShoppingCartContext";
 
 type AuthContextType = {
   auth: IUser | any;
@@ -52,6 +53,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loginDialog, setLoginDialog] = useState(false);
   const [registerDialog, setRegisterDialog] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { setCartItems } = useShoppingCart();
 
   const setLoggedInUser = async () => {
     const parsedUser = await storage.getItem("user");
@@ -83,10 +85,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const setLoggedOutUser = () => {
     storage.removeItem("jwt");
     storage.removeItem("user");
+    storage.removeItem("cart");
+    storage.removeItem("role");
     setIsLoggedIn(false);
     setAuth({});
     setToken("");
     setRole([""]);
+    setCartItems([]);
+    window.location.reload();
   };
 
   const openLoginDialog = () => setLoginDialog(true);
